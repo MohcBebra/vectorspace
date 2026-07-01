@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://dv3lbni6605bi"]
+
+[ext_resource type="Shader" uid="uid://d4ab2e2sxqkn0" path="res://shaders/circle.gdshader" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://dj736qww4ffp1" path="res://scripts/player.gd" id="1_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://csisykp88uli4" path="res://scenes/hud.tscn" id="2_g2els"]
+[ext_resource type="PackedScene" uid="uid://drw2f2f3brc1s" path="res://components/scenes/health_component.tscn" id="4_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://c0clh6fqac4i" path="res://components/scenes/hitbox_component.tscn" id="5_tuyoq"]
+[ext_resource type="PackedScene" uid="uid://3etorvxr000y" path="res://components/scenes/attatck_component.tscn" id="6_tuyoq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2els"]
+shader = ExtResource("1_3vyb7")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/alpha = 1.0
+shader_parameter/inner_space = 0.80000001192096
+shader_parameter/outring_color = Color(0, 0, 0, 1)
+shader_parameter/outring_space = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_3vyb7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 8.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qhqgy"]
+shader = ExtResource("1_3vyb7")
+shader_parameter/color = Color(0.45419282, 0.81654334, 0, 1)
+shader_parameter/alpha = 0.499999988824
+shader_parameter/inner_space = 0.98999997787152
+shader_parameter/outring_color = Color(0, 0, 0, 1)
+shader_parameter/outring_space = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_dqkch"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
+radius = 8.062258
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fjrip"]
+radius = 8.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tuyoq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("LabelName:text")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D" unique_id=2073243867]
+motion_mode = 1
+script = ExtResource("1_qhqgy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1184774876]
+material = SubResource("ShaderMaterial_g2els")
+scale = Vector2(16, 16)
+texture = SubResource("CanvasTexture_3vyb7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=872677559]
+shape = SubResource("CircleShape2D_3vyb7")
+
+[node name="ProjectileAreaSprite" type="Sprite2D" parent="." unique_id=1883830706]
+material = SubResource("ShaderMaterial_qhqgy")
+scale = Vector2(100, 100)
+texture = SubResource("CanvasTexture_dqkch")
+
+[node name="HUD" parent="." unique_id=1100613613 instance=ExtResource("2_g2els")]
+visible = false
+
+[node name="HealthComponent" parent="." unique_id=754314589 instance=ExtResource("4_qlg0r")]
+max_health = 100
+
+[node name="HitboxComponent" parent="." unique_id=1805509618 node_paths=PackedStringArray("health_component") instance=ExtResource("5_tuyoq")]
+collision_layer = 1
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=697909066]
+shape = SubResource("CircleShape2D_qlg0r")
+debug_color = Color(1, 1, 0, 0.41960785)
+
+[node name="AttatckComponent" parent="." unique_id=1565239151 instance=ExtResource("6_tuyoq")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=608819480]
+shape = SubResource("CircleShape2D_fjrip")
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=568202354]
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1911431778]
+replication_config = SubResource("SceneReplicationConfig_tuyoq")
+
+[node name="LabelName" type="Label" parent="." unique_id=1059284299]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.5
+offset_top = -17.225
+offset_right = 10.5
+offset_bottom = -8.725
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 0.78431374)
+theme_override_font_sizes/font_size = 7
+text = "name"

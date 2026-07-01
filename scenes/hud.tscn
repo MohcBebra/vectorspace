@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://csisykp88uli4"]
+
+[ext_resource type="Script" uid="uid://ck67f3ss76wda" path="res://scripts/hud.gd" id="1_ahhtf"]
+[ext_resource type="Shader" uid="uid://dxfdt62m0qsn7" path="res://shaders/hp_bar.gdshader" id="2_oo0fn"]
+[ext_resource type="Script" uid="uid://dvfwx3c6gw5qr" path="res://scripts/hp_bar.gd" id="3_5ysmq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ysmq"]
+shader = ExtResource("2_oo0fn")
+shader_parameter/value = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_ahhtf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5ysmq"]
+font_size = 7
+font_color = Color(0, 0, 0, 1)
+
+[node name="HUD" type="CanvasLayer" unique_id=1100613613]
+script = ExtResource("1_ahhtf")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1778272898]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 1
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Bottom" type="VBoxContainer" parent="MarginContainer" unique_id=166430097]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="pos_x" type="HBoxContainer" parent="MarginContainer/Bottom" unique_id=1431245841]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/Bottom/pos_x" unique_id=1461302816]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "pos x ="
+horizontal_alignment = 1
+
+[node name="LineEditX" type="LineEdit" parent="MarginContainer/Bottom/pos_x" unique_id=788682400]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+placeholder_text = "ass"
+expand_to_text_length = true
+emoji_menu_enabled = false
+caret_blink = true
+
+[node name="pos_y" type="HBoxContainer" parent="MarginContainer/Bottom" unique_id=1020813164]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/Bottom/pos_y" unique_id=116212667]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "pos y ="
+horizontal_alignment = 1
+
+[node name="LineEditY" type="LineEdit" parent="MarginContainer/Bottom/pos_y" unique_id=70519537]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+placeholder_text = "ass"
+expand_to_text_length = true
+emoji_menu_enabled = false
+caret_blink = true
+
+[node name="launch" type="HBoxContainer" parent="MarginContainer/Bottom" unique_id=348388932]
+layout_mode = 2
+alignment = 1
+
+[node name="projectiles_count" type="Label" parent="MarginContainer/Bottom/launch" unique_id=228633170]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "2"
+
+[node name="Button" type="Button" parent="MarginContainer/Bottom/launch" unique_id=227711532]
+custom_minimum_size = Vector2(62, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 7
+text = "Launch"
+
+[node name="LeftBottom" type="VBoxContainer" parent="MarginContainer" unique_id=446434984]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="HPBar" type="TextureRect" parent="MarginContainer/LeftBottom" unique_id=1842735584]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_5ysmq")
+custom_minimum_size = Vector2(80, 8)
+layout_mode = 2
+texture = SubResource("CanvasTexture_ahhtf")
+script = ExtResource("3_5ysmq")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/LeftBottom/HPBar" unique_id=470723509]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 1
+
+[node name="Label" type="Label" parent="MarginContainer/LeftBottom/HPBar/MarginContainer" unique_id=1385062419]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "100"
+label_settings = SubResource("LabelSettings_5ysmq")
+
+[connection signal="editing_toggled" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_editing_toggled"]
+[connection signal="mouse_entered" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_mouse_exited"]
+[connection signal="text_changed" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_text_changed"]
+[connection signal="editing_toggled" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_editing_toggled"]
+[connection signal="mouse_entered" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_mouse_exited"]
+[connection signal="text_changed" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_text_changed"]
+[connection signal="button_up" from="MarginContainer/Bottom/launch/Button" to="." method="_on_button_button_up"]

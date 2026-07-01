@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cxabrmvit8jy8"]
+
+[ext_resource type="Shader" uid="uid://dmj3xi7dabiqw" path="res://shaders/space.gdshader" id="1_a58b4"]
+[ext_resource type="Script" uid="uid://bjk45novmgy1x" path="res://scripts/multiplayer_main_scene.gd" id="1_esq1n"]
+
+[sub_resource type="Gradient" id="Gradient_esq1n"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sc686"]
+frequency = 0.0052
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7ykc4"]
+width = 1000
+height = 500
+noise = SubResource("FastNoiseLite_sc686")
+color_ramp = SubResource("Gradient_esq1n")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5d0a6"]
+shader = ExtResource("1_a58b4")
+shader_parameter/bg_color = Color(0, 0.007358151, 0.049460717, 1)
+shader_parameter/fg_color = Color(0.28777766, 0.2975919, 0.21535045, 1)
+shader_parameter/noise = SubResource("NoiseTexture2D_7ykc4")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_fxwgo"]
+
+[node name="MultiplayerMainScene" type="Node2D" unique_id=634167084]
+script = ExtResource("1_esq1n")
+
+[node name="Sprite2D_bg" type="Sprite2D" parent="." unique_id=1805175255]
+material = SubResource("ShaderMaterial_5d0a6")
+scale = Vector2(800, 500)
+texture = SubResource("CanvasTexture_fxwgo")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1770553088]
+_spawnable_scenes = PackedStringArray("uid://dv3lbni6605bi", "uid://wje2ynoq3qd0")
+spawn_path = NodePath("..")

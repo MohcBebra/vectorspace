@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://wje2ynoq3qd0"]
+
+[ext_resource type="Script" uid="uid://bwbtojg0wov7p" path="res://scripts/projectile.gd" id="1_q3m7n"]
+[ext_resource type="Shader" uid="uid://d4ab2e2sxqkn0" path="res://shaders/circle.gdshader" id="2_q3m7n"]
+[ext_resource type="PackedScene" uid="uid://c0clh6fqac4i" path="res://components/scenes/hitbox_component.tscn" id="3_6q2a6"]
+[ext_resource type="Shader" uid="uid://rhurf8e25c7v" path="res://shaders/spawnVFX.gdshader" id="3_jxwu6"]
+[ext_resource type="PackedScene" uid="uid://drw2f2f3brc1s" path="res://components/scenes/health_component.tscn" id="4_byeak"]
+[ext_resource type="PackedScene" uid="uid://3etorvxr000y" path="res://components/scenes/attatck_component.tscn" id="5_byeak"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jxwu6"]
+resource_local_to_scene = true
+shader = ExtResource("3_jxwu6")
+shader_parameter/alpha = 0.499999988824
+shader_parameter/spawn_time = 0.0
+shader_parameter/time = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_softn"]
+resource_local_to_scene = true
+shader = ExtResource("2_q3m7n")
+shader_parameter/color = Color(0.56261516, 0.6127817, 0.8942024, 1)
+shader_parameter/alpha = 0.999999977648
+shader_parameter/inner_space = 0.0
+shader_parameter/outring_color = Color(0.74046963, 0.78851265, 0.85726273, 1)
+shader_parameter/outring_space = 0.90000001341108
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_c8fcr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q3m7n"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6q2a6"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_byeak"]
+radius = 6.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jxwu6"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Projectile" type="CharacterBody2D" unique_id=742553888]
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_q3m7n")
+
+[node name="SpawnVFX" type="CanvasGroup" parent="." unique_id=724039690]
+material = SubResource("ShaderMaterial_jxwu6")
+
+[node name="Sprite2D" type="Sprite2D" parent="SpawnVFX" unique_id=147764119]
+material = SubResource("ShaderMaterial_softn")
+scale = Vector2(12.000001, 12.000002)
+texture = SubResource("CanvasTexture_c8fcr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1337423962]
+shape = SubResource("CircleShape2D_q3m7n")
+
+[node name="HealthComponent" parent="." unique_id=754314589 instance=ExtResource("4_byeak")]
+
+[node name="HitboxComponent" parent="." unique_id=1805509618 node_paths=PackedStringArray("health_component") instance=ExtResource("3_6q2a6")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=2123282212]
+shape = SubResource("CircleShape2D_6q2a6")
+disabled = true
+debug_color = Color(1, 1, 0, 0.41960785)
+
+[node name="AttatckComponent" parent="." unique_id=1565239151 instance=ExtResource("5_byeak")]
+damage = 20
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=1324021160]
+shape = SubResource("CircleShape2D_byeak")
+disabled = true
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=2116062920]
+process_callback = 0
+one_shot = true
+autostart = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=554157262]
+replication_config = SubResource("SceneReplicationConfig_jxwu6")
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_timer_timeout"]
