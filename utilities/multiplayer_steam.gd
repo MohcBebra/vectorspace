@@ -28,6 +28,7 @@ func on_lobby_created(connect: int, lobby_id: int):
 		peer.server_relay = true
 		peer.create_host()
 		multiplayer.multiplayer_peer = peer
+		player_info.set("name", Steam.getPersonaName())
 		player_joined.emit(Steam.getSteamID(), player_info)
 
 ## called when joining a lobby (after creating a lobby or joining a friend)
@@ -39,7 +40,7 @@ func on_lobby_joined(lobby_id: int, permissions: int, locked: bool, response: in
 		peer.server_relay = true
 		peer.create_client(Steam.getLobbyOwner(lobby_id))
 		multiplayer.multiplayer_peer = peer
-		player_info.set("name", Steam.getPlayerNickname(Steam.getSteamID()))
+		player_info.set("name", Steam.getPersonaName())
 		player_joined.emit(Steam.getSteamID(), player_info)
 
 ## called when attemping to join from the Steam interface

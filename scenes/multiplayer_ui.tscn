@@ -54,29 +54,36 @@ grow_vertical = 2
 
 [node name="Center" type="HBoxContainer" parent="Lobby" unique_id=2071977578]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -26.5
-offset_right = 20.0
-offset_bottom = 26.5
+anchor_bottom = 1.0
+offset_left = -93.5
+offset_right = 93.5
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Lobby/Center" unique_id=1464067225]
-custom_minimum_size = Vector2(100, 0)
+clip_contents = false
+custom_minimum_size = Vector2(150, 10)
 layout_mode = 2
 
-[node name="PlayerList" type="VBoxContainer" parent="Lobby/Center/ScrollContainer" unique_id=896580510]
+[node name="PanelContainer" type="PanelContainer" parent="Lobby/Center/ScrollContainer" unique_id=866057057]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 6
+
+[node name="PlayerList" type="VBoxContainer" parent="Lobby/Center/ScrollContainer/PanelContainer" unique_id=896580510]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Lobby/Center" unique_id=1751432190]
 layout_mode = 2
+alignment = 1
 
 [node name="StartButton" type="Button" parent="Lobby/Center/VBoxContainer" unique_id=2069279094]
 visible = false
