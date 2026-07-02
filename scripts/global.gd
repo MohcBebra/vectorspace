@@ -4,6 +4,10 @@ var main_scene: Node2D
 
 @onready var Projectile: PackedScene = preload("res://scenes/projectile.tscn")
 
+@rpc("call_local", "reliable")
+func load_game(game_scene_path):
+	get_tree().change_scene_to_file(game_scene_path)
+
 @rpc("any_peer", "call_local")
 func spawn_projectile(x_text: String, y_text: String, player_spawn_radius: float, player_path: NodePath):
 	if not multiplayer.is_server(): return

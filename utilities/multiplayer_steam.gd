@@ -7,6 +7,7 @@ const MAX_MEMBERS := 4
 
 var peer: SteamMultiplayerPeer
 
+var players: Dictionary[int, Dictionary]
 var player_info: Dictionary = {"name": "Name"}
 
 func _ready() -> void:
@@ -22,17 +23,19 @@ func host_lobby():
 	Steam.createLobby(LOBBY_TYPE, MAX_MEMBERS)
 
 ## called after creating lobby locally
-func on_lobby_created(connect: int, lobby_id: int):
-	if connect == Steam.RESULT_OK:
+func on_lobby_created(lobby_connect: int, _lobby_id: int):
+	if lobby_connect == Steam.RESULT_OK:
 		peer = SteamMultiplayerPeer.new()
 		peer.server_relay = true
 		peer.create_host()
 		multiplayer.multiplayer_peer = peer
 		player_info.set("name", Steam.getPersonaName())
+		players[Steam.getSteamID()] = player_info
 		player_joined.emit(Steam.getSteamID(), player_info)
 
 ## called when joining a lobby (after creating a lobby or joining a friend)
-func on_lobby_joined(lobby_id: int, permissions: int, locked: bool, response: int):
+## происходит только у создающего или подключаещегося один раз, для остальных ничего
+func on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int):
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		if Steam.getLobbyOwner(lobby_id) == Steam.getSteamID():
 			return
@@ -41,8 +44,9 @@ func on_lobby_joined(lobby_id: int, permissions: int, locked: bool, response: in
 		peer.create_client(Steam.getLobbyOwner(lobby_id))
 		multiplayer.multiplayer_peer = peer
 		player_info.set("name", Steam.getPersonaName())
+		players[Steam.getSteamID()] = player_info
 		player_joined.emit(Steam.getSteamID(), player_info)
 
 ## called when attemping to join from the Steam interface
-func on_join_requested(lobby_id: int, steam_id: int):
+func on_join_requested(lobby_id: int, _steam_id: int):
 	Steam.joinLobby(lobby_id)

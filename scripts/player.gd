@@ -24,7 +24,7 @@ func _ready() -> void:
 	
 	camera.make_current()
 	hud.show()
-	label_name.text = Multiplayer.player_info.name
+	label_name.text = MultiplayerSteam.player_info.name
 	$ProjectileAreaSprite.scale = Vector2(spawn_radius * 2, spawn_radius * 2)
 	health_changed(health_component.health, health_component.max_health)
 
