@@ -15,6 +15,8 @@ func _ready() -> void:
 	Steam.lobby_created.connect(on_lobby_created)
 	Steam.lobby_joined.connect(on_lobby_joined)
 	Steam.join_requested.connect(on_join_requested)
+	multiplayer.peer_connected.connect(on_peer_connected)
+	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
@@ -45,9 +47,15 @@ func on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: 
 		multiplayer.multiplayer_peer = peer
 		player_info.set("name", Steam.getPersonaName())
 		players[Steam.getSteamID()] = player_info
-		print(players)
 		player_joined.emit(Steam.getSteamID(), player_info)
 
 ## called when attemping to join from the Steam interface
 func on_join_requested(lobby_id: int, _steam_id: int):
 	Steam.joinLobby(lobby_id)
+
+func on_peer_connected(peer_id: int):
+	players[peer_id] = player_info
+	player_joined.emit(peer_id, player_info)
+
+func on_peer_disconnected(peer_id: int):
+	players.erase(peer_id)

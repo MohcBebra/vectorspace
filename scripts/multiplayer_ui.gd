@@ -9,7 +9,6 @@ var host_player: String
 
 func _ready() -> void:
 	MultiplayerSteam.player_joined.connect(on_player_joined)
-	multiplayer.peer_connected.connect(on_peer_connected)
 	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 	Steam.avatar_loaded.connect(on_avatar_loaded)
 
@@ -38,11 +37,11 @@ func on_player_joined(steam_id: int, pl_info: Dictionary):
 	main.hide()
 	lobby.show()
 
-func on_peer_connected(peer_id: int):
-	print("PEER CONNECTED: ", peer_id)
-	print(MultiplayerSteam.players)
-	add_to_player_list(peer_id, MultiplayerSteam.players.get(peer_id))
-	start_btn.show()
+#func on_peer_connected(peer_id: int):
+	#print("PEER CONNECTED: ", peer_id)
+	#print(MultiplayerSteam.players)
+	#add_to_player_list(peer_id, MultiplayerSteam.players.get(peer_id))
+	#start_btn.show()
 
 func add_to_player_list(steam_id: int, pl_info: Dictionary):
 	var label := Label.new()
