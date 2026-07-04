@@ -11,10 +11,13 @@ var spawned_projectiles: int = 0
 var players: Array[CharacterBody2D]
 
 func _ready() -> void:
-	pass
+	MultiplayerSteam.player_loaded.rpc_id(1)
 
 func start_game():
-	spawn_player(multiplayer.get_unique_id())
+	print_debug("All players loaded!")
+	for peer in multiplayer.get_peers():
+		spawn_player(peer)
+	spawn_player(1)
 
 func spawn_player(peer_id: int):
 	var new_player := PLAYER.instantiate() as CharacterBody2D

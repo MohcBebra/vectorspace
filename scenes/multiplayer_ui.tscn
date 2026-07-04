@@ -86,7 +86,6 @@ layout_mode = 2
 alignment = 1
 
 [node name="StartButton" type="Button" parent="Lobby/Center/VBoxContainer" unique_id=2069279094]
-visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 text = "Start"

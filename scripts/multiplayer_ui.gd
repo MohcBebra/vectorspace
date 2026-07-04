@@ -23,7 +23,6 @@ func _join_button_pressed() -> void:
 
 func _start_button_pressed() -> void:
 	Global.load_game.rpc("res://scenes/multiplayer_main_scene.tscn")
-	$/root/MultiplayerMainScene.start_game()
 
 func _leave_button_pressed() -> void:
 	MultiplayerSteam.remove_steam_id_from_others.rpc(Steam.getSteamID())
@@ -46,12 +45,6 @@ func on_player_joined(steam_id: int, pl_info: Dictionary):
 
 func on_player_leaved(steam_id: int):
 	players_list.remove_child(players_list.get_node(str(steam_id)))
-
-#func on_peer_connected(peer_id: int):
-	#print("PEER CONNECTED: ", peer_id)
-	#print(MultiplayerSteam.players)
-	#add_to_player_list(peer_id, MultiplayerSteam.players.get(peer_id))
-	#start_btn.show()
 
 func add_to_player_list(steam_id: int, pl_info: Dictionary):
 	var label := Label.new()
