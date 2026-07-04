@@ -33,6 +33,7 @@ func _leave_button_pressed() -> void:
 
 func on_player_joined(steam_id: int, pl_info: Dictionary):
 	print("PLAYER JOINED: ", steam_id, " ", pl_info)
+	print(MultiplayerSteam.players)
 	add_to_player_list(steam_id, pl_info)
 	main.hide()
 	lobby.show()

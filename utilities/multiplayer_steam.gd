@@ -54,8 +54,9 @@ func on_join_requested(lobby_id: int, _steam_id: int):
 	Steam.joinLobby(lobby_id)
 
 func on_peer_connected(peer_id: int):
-	players[peer_id] = player_info
-	player_joined.emit(peer_id, player_info)
+	var new_pl_info: Dictionary = {"name": Steam.getPlayerNickname(peer_id)}
+	players[peer_id] = new_pl_info
+	player_joined.emit(peer_id, new_pl_info)
 
 func on_peer_disconnected(peer_id: int):
 	players.erase(peer_id)
