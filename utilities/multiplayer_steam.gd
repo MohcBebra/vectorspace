@@ -45,6 +45,7 @@ func on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: 
 		multiplayer.multiplayer_peer = peer
 		player_info.set("name", Steam.getPersonaName())
 		players[Steam.getSteamID()] = player_info
+		print(players)
 		player_joined.emit(Steam.getSteamID(), player_info)
 
 ## called when attemping to join from the Steam interface
