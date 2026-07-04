@@ -55,6 +55,7 @@ func die():
 
 func projectile_dead():
 	hud.increase_projectile_count(1)
+	print("player")
 
 func get_spawn_radius() -> float:
 	return spawn_radius

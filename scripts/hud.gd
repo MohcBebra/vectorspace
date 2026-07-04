@@ -100,6 +100,7 @@ func _on_line_edit_y_text_changed(new_text: String) -> void:
 	line_edit_text_control(line_edit_y, new_text)
 
 func increase_projectile_count(amount: int):
+	print("hud")
 	if projectiles_count + amount >= player.get_max_projectiles():
 		projectiles_count = player.get_max_projectiles()
 	else:

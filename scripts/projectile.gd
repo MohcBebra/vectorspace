@@ -68,6 +68,7 @@ func set_player(player_p: NodePath):
 	player_path = player_p
 
 func die():
+	print("projectile")
 	player.projectile_dead()
 	Global.remove_projectile.rpc(get_path())
 
