@@ -1,6 +1,8 @@
 extends Node
 
+signal self_joinded(id: int, pl_info: Dictionary)
 signal player_joined(id: int, pl_info: Dictionary)
+signal player_leaved(id: int)
 
 const LOBBY_TYPE := Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY
 const MAX_MEMBERS := 4
@@ -16,7 +18,6 @@ func _ready() -> void:
 	Steam.lobby_joined.connect(on_lobby_joined)
 	Steam.join_requested.connect(on_join_requested)
 	multiplayer.peer_connected.connect(on_peer_connected)
-	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
@@ -33,7 +34,7 @@ func on_lobby_created(lobby_connect: int, _lobby_id: int):
 		multiplayer.multiplayer_peer = peer
 		player_info.set("name", Steam.getPersonaName())
 		players[Steam.getSteamID()] = player_info
-		player_joined.emit(Steam.getSteamID(), player_info)
+		self_joinded.emit(Steam.getSteamID(), player_info)
 
 ## called when joining a lobby (after creating a lobby or joining a friend)
 ## происходит только у создающего или подключаещегося один раз, для остальных ничего
@@ -47,16 +48,22 @@ func on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: 
 		multiplayer.multiplayer_peer = peer
 		player_info.set("name", Steam.getPersonaName())
 		players[Steam.getSteamID()] = player_info
-		player_joined.emit(Steam.getSteamID(), player_info)
+		self_joinded.emit(Steam.getSteamID(), player_info)
 
 ## called when attemping to join from the Steam interface
 func on_join_requested(lobby_id: int, _steam_id: int):
 	Steam.joinLobby(lobby_id)
 
-func on_peer_connected(peer_id: int):
-	var new_pl_info: Dictionary = {"name": Steam.getPlayerNickname(peer_id)}
-	players[peer_id] = new_pl_info
-	player_joined.emit(peer_id, new_pl_info)
+@rpc("any_peer", "call_remote", "reliable")
+func give_steam_id_to_others(steam_id: int):
+	var new_pl_info: Dictionary = {"name": Steam.getPlayerNickname(steam_id)}
+	players[steam_id] = new_pl_info
+	player_joined.emit(steam_id, new_pl_info)
 
-func on_peer_disconnected(peer_id: int):
-	players.erase(peer_id)
+@rpc("any_peer", "call_remote", "reliable")
+func remove_steam_id_from_others(steam_id: int):
+	players.erase(steam_id)
+	player_leaved.emit(steam_id)
+
+func on_peer_connected(_peer_id: int): ## сигнал приходит когда ктото подключается, но клиент пересылает свой id другим игрокам которые как раз присоединились
+	give_steam_id_to_others.rpc(Steam.getSteamID())

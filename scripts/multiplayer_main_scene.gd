@@ -1,6 +1,6 @@
 extends Node2D
 
-const PLAYER = preload("uid://dv3lbni6605bi")
+const PLAYER = preload("res://scenes/player.tscn")
 
 var pl1_position: Vector2 = Vector2(-200, 0)
 var pl2_position: Vector2 = Vector2(200, 0)

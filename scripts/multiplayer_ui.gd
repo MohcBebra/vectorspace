@@ -8,8 +8,9 @@ extends Control
 var host_player: String
 
 func _ready() -> void:
+	MultiplayerSteam.self_joinded.connect(on_self_joined)
 	MultiplayerSteam.player_joined.connect(on_player_joined)
-	multiplayer.peer_disconnected.connect(on_peer_disconnected)
+	MultiplayerSteam.player_leaved.connect(on_player_leaved)
 	Steam.avatar_loaded.connect(on_avatar_loaded)
 
 func _create_button_pressed() -> void:
@@ -25,18 +26,26 @@ func _start_button_pressed() -> void:
 	$/root/MultiplayerMainScene.start_game()
 
 func _leave_button_pressed() -> void:
+	MultiplayerSteam.remove_steam_id_from_others.rpc(Steam.getSteamID())
 	lobby.hide()
 	start_btn.hide()
 	main.show()
 	for c: HBoxContainer in players_list.get_children():
 		c.queue_free()
 
+func on_self_joined(steam_id: int, pl_info: Dictionary):
+	print("SELF JOINED: ", steam_id, " ", pl_info)
+	add_to_player_list(steam_id, pl_info)
+	main.hide()
+	lobby.show()
+
 func on_player_joined(steam_id: int, pl_info: Dictionary):
 	print("PLAYER JOINED: ", steam_id, " ", pl_info)
 	print(MultiplayerSteam.players)
 	add_to_player_list(steam_id, pl_info)
-	main.hide()
-	lobby.show()
+
+func on_player_leaved(steam_id: int):
+	players_list.remove_child(players_list.get_node(str(steam_id)))
 
 #func on_peer_connected(peer_id: int):
 	#print("PEER CONNECTED: ", peer_id)
@@ -60,10 +69,6 @@ func add_to_player_list(steam_id: int, pl_info: Dictionary):
 	h_container.add_child(label)
 	
 	players_list.add_child(h_container)
-
-func on_peer_disconnected(peer_id: int):
-	print("PEER DISCONNECTED: ", peer_id)
-	players_list.remove_child(players_list.get_node(str(peer_id)))
 
 func on_avatar_loaded(steam_id: int, avatar_size: int, avatar_buffer: PackedByteArray):
 	var avatar_image: Image = Image.create_from_data(avatar_size, avatar_size, false, Image.FORMAT_RGBA8, avatar_buffer)
