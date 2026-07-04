@@ -56,7 +56,7 @@ func on_join_requested(lobby_id: int, _steam_id: int):
 
 @rpc("any_peer", "call_remote", "reliable")
 func give_steam_id_to_others(steam_id: int):
-	var new_pl_info: Dictionary = {"name": Steam.getPlayerNickname(steam_id)}
+	var new_pl_info: Dictionary = {"name": Steam.getFriendPersonaName(steam_id)}
 	players[steam_id] = new_pl_info
 	player_joined.emit(steam_id, new_pl_info)
 
