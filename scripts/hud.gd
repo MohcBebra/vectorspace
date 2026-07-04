@@ -19,6 +19,7 @@ var inputs_variables: Dictionary = {
 var expression = Expression.new()
 
 func _ready() -> void:
+	print("IM READY")
 	$MarginContainer.grab_focus()
 	player = get_parent()
 	main_scene = get_parent().get_parent()
