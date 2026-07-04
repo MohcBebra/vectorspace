@@ -75,7 +75,6 @@ func player_loaded():
 	if not multiplayer.is_server():
 		print("piska")
 	else:
-		print("molodec")
 		players_loaded += 1
 		if players_loaded == players.size():
 			$/root/MultiplayerMainScene.start_game()
