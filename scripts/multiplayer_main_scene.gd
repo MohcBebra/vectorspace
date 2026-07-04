@@ -11,6 +11,7 @@ var spawned_projectiles: int = 0
 var players: Array[CharacterBody2D]
 
 func _ready() -> void:
+	Global.main_scene = self
 	MultiplayerSteam.player_loaded.rpc_id(1)
 
 func start_game():
@@ -31,3 +32,9 @@ func  initialize_player(player: CharacterBody2D):
 	else:
 		player.position = pl2_position
 	players.append(player)
+
+func get_spawned_projectiles() -> int:
+	return spawned_projectiles
+
+func increase_spawned_projectiles():
+	spawned_projectiles += 1

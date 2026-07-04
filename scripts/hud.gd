@@ -19,7 +19,6 @@ var inputs_variables: Dictionary = {
 var expression = Expression.new()
 
 func _ready() -> void:
-	print("IM READY")
 	$MarginContainer.grab_focus()
 	player = get_parent()
 	main_scene = get_parent().get_parent()
@@ -54,7 +53,6 @@ func _on_button_button_up() -> void: ## запуск снаряда
 	var result: float = Vector2.ZERO.distance_to(Vector2(x_pos, y_pos))
 	if result > 1:
 		return
-	
 	
 	Global.spawn_projectile.rpc(x_text_dedent, y_text_dedent, player.get_spawn_radius(), player.get_path())
 	
