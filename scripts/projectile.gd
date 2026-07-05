@@ -74,12 +74,11 @@ func set_player(player_p: NodePath):
 	player_path = player_p
 
 func die():
-	if not multiplayer.is_server(): return
 	player.projectile_dead()
-	Global.remove_projectile.rpc(get_path())
+	if multiplayer.is_server():
+		Global.remove_projectile.rpc(get_path())
 
 func _on_timer_timeout() -> void:
-	if not multiplayer.is_server(): return
 	proj_is_ready = true
 	$AttatckComponent/CollisionShape2D.disabled = false
 	$HitboxComponent/CollisionShape2D.disabled = false
