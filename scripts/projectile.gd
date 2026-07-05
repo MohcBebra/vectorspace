@@ -18,11 +18,6 @@ var inputs_variables: Dictionary = {
 }
 
 func _ready() -> void:
-	if not is_multiplayer_authority():
-		set_process(false)
-		set_physics_process(false)
-		return
-	
 	player = get_parent().get_node(player_path)
 	if (x_position_equation.is_empty() and y_position_equation.is_empty()):
 		print_debug(self, " position is (0, 0)")
@@ -79,7 +74,6 @@ func set_player(player_p: NodePath):
 	player_path = player_p
 
 func die():
-	if not is_multiplayer_authority(): return
 	player.projectile_dead()
 	Global.remove_projectile.rpc(get_path())
 

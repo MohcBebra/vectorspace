@@ -54,6 +54,7 @@ func die():
 	Global.remove_player.rpc(get_path())
 
 func projectile_dead():
+	print("proj_is_dead")
 	hud.increase_projectile_count(1)
 
 func get_spawn_radius() -> float:
