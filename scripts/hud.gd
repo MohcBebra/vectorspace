@@ -8,7 +8,8 @@ extends CanvasLayer
 var player: CharacterBody2D
 var main_scene: Node2D
 
-@export var projectiles_count: int
+@export var projectiles_count: int:
+	set = set_label_proj_count
 
 var line_edit_x_is_wrong: bool = false
 var line_edit_y_is_wrong: bool = false
@@ -54,11 +55,9 @@ func _on_button_button_up() -> void: ## запуск снаряда
 	if result > 1:
 		return
 	
-	Global.spawn_projectile.rpc(multiplayer.get_unique_id(), x_text_dedent, y_text_dedent, player.get_spawn_radius(), player.get_path())
+	Global.spawn_projectile.rpc(x_text_dedent, y_text_dedent, player.get_spawn_radius(), player.get_path())
 	
 	projectiles_count -= 1
-	label_projectiles_count.text = str(projectiles_count)
-
 
 func line_edit_text_control(line_edit: LineEdit, text: String) -> void:
 	var regex = RegEx.new()
@@ -104,8 +103,11 @@ func increase_projectile_count(amount: int):
 		projectiles_count = player.get_max_projectiles()
 	else:
 		projectiles_count += amount
-	label_projectiles_count.text = str(projectiles_count)
 
 func set_health(health: int, max_health: int):
 	hp_bar.max_value = max_health
 	hp_bar.value = health
+
+func set_label_proj_count(new_count):
+	projectiles_count = new_count
+	label_projectiles_count.text = str(projectiles_count)
