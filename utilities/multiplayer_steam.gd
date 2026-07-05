@@ -12,8 +12,6 @@ var peer: SteamMultiplayerPeer
 var players: Dictionary[int, Dictionary]
 var player_info: Dictionary = {"name": "Name"}
 
-var players_loaded := 0
-
 func _ready() -> void:
 	Steam.initRelayNetworkAccess()
 	Steam.lobby_created.connect(on_lobby_created)
@@ -69,12 +67,3 @@ func remove_steam_id_from_others(steam_id: int):
 
 func on_peer_connected(_peer_id: int): ## сигнал приходит когда ктото подключается, но клиент пересылает свой id другим игрокам которые как раз присоединились
 	give_steam_id_to_others.rpc(Steam.getSteamID())
-
-@rpc("any_peer", "call_local", "reliable")
-func player_loaded():
-	if not multiplayer.is_server():
-		print("piska")
-	else:
-		players_loaded += 1
-		if players_loaded == players.size():
-			$/root/MultiplayerMainScene.start_game()

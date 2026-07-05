@@ -86,9 +86,6 @@ process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1911431778]
-replication_config = SubResource("SceneReplicationConfig_tuyoq")
-
 [node name="LabelName" type="Label" parent="." unique_id=1059284299]
 anchors_preset = 8
 anchor_left = 0.5
@@ -105,3 +102,6 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 0.78431374)
 theme_override_font_sizes/font_size = 7
 text = "name"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1911431778]
+replication_config = SubResource("SceneReplicationConfig_tuyoq")

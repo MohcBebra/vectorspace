@@ -26,6 +26,8 @@ func _start_button_pressed() -> void:
 
 func _leave_button_pressed() -> void:
 	MultiplayerSteam.remove_steam_id_from_others.rpc(Steam.getSteamID())
+	if multiplayer.is_server():
+		multiplayer.multiplayer_peer.close()
 	lobby.hide()
 	start_btn.hide()
 	main.show()
@@ -37,6 +39,8 @@ func on_self_joined(steam_id: int, pl_info: Dictionary):
 	add_to_player_list(steam_id, pl_info)
 	main.hide()
 	lobby.show()
+	if multiplayer.is_server():
+		start_btn.show()
 
 func on_player_joined(steam_id: int, pl_info: Dictionary):
 	print("PLAYER JOINED: ", steam_id, " ", pl_info)

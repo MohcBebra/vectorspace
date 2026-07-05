@@ -12,7 +12,7 @@ var players: Array[CharacterBody2D]
 
 func _ready() -> void:
 	Global.main_scene = self
-	MultiplayerSteam.player_loaded.rpc_id(1)
+	Global.player_loaded.rpc_id(1)
 
 func start_game():
 	print_debug("All players loaded!")
@@ -26,7 +26,7 @@ func spawn_player(peer_id: int):
 	initialize_player(new_player)
 	add_child(new_player)
 
-func  initialize_player(player: CharacterBody2D):
+func initialize_player(player: CharacterBody2D):
 	if spawned_player == 0:
 		player.position = pl1_position
 	else:

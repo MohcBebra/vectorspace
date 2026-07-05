@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var player_path: NodePath
+@export var player_path: NodePath
 var player: CharacterBody2D
 
 @export var x_position_equation: String
@@ -18,7 +18,6 @@ var inputs_variables: Dictionary = {
 }
 
 func _ready() -> void:
-	print("smth")
 	player = get_parent().get_node(player_path)
 	print(player)
 	if (x_position_equation.is_empty() and y_position_equation.is_empty()):
@@ -48,8 +47,14 @@ func _physics_process(delta: float) -> void:
 		y_pos = exec
 	
 	var pos := Vector2(x_pos * spawn_radius, y_pos * spawn_radius)
+	if not clamping: ## ограничиваем если выходит за границы в первый кадр
+		if pos.distance_to(Vector2.ZERO) > spawn_radius:
+			var angle = Vector2.ZERO.angle_to(pos)
+			pos.x = cos(angle) * spawn_radius
+			pos.y = sin(angle) * spawn_radius
+	
 	var pre_velocity: Vector2 = (pos - last_pos) / delta
-	if clamping:
+	if clamping: ## ограничиваем скорость
 		pre_velocity = pre_velocity.clampf(-player.get_max_projectile_speed(), player.get_max_projectile_speed())
 	velocity = pre_velocity
 	#print(velocity, position)

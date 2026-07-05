@@ -2,6 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://dmj3xi7dabiqw" path="res://shaders/space.gdshader" id="1_a58b4"]
 [ext_resource type="Script" uid="uid://bjk45novmgy1x" path="res://scripts/multiplayer_main_scene.gd" id="1_esq1n"]
+[ext_resource type="PackedScene" uid="uid://3etorvxr000y" path="res://components/scenes/attatck_component.tscn" id="3_sc686"]
 
 [sub_resource type="Gradient" id="Gradient_esq1n"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
@@ -32,6 +33,13 @@ script = ExtResource("1_esq1n")
 material = SubResource("ShaderMaterial_5d0a6")
 scale = Vector2(800, 500)
 texture = SubResource("CanvasTexture_fxwgo")
+
+[node name="AttatckComponent" parent="Sprite2D_bg" unique_id=1565239151 instance=ExtResource("3_sc686")]
+scale = Vector2(0.001, 0.002)
+damage = 100
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D_bg/AttatckComponent" unique_id=775528993]
+polygon = PackedVector2Array(-520, -270, 520, -270, 520, 270, -520, 270, -500, 250, 500, 250, 500, -250, -500, -250, -500, 250, -520, 270)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1770553088]
 _spawnable_scenes = PackedStringArray("uid://dv3lbni6605bi", "uid://wje2ynoq3qd0")

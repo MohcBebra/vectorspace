@@ -38,6 +38,9 @@ radius = 6.0
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:player_path")
+properties/1/spawn = true
+properties/1/replication_mode = 2
 
 [node name="Projectile" type="CharacterBody2D" unique_id=742553888]
 collision_layer = 2
