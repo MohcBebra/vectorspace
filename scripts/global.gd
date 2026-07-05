@@ -20,15 +20,12 @@ func player_loaded():
 
 @rpc("any_peer", "call_local")
 func spawn_projectile(x_text: String, y_text: String, player_spawn_radius: float, player_path: NodePath):
-	print("before")
 	if not multiplayer.is_server(): return
-	print("after")
 	var player: CharacterBody2D = main_scene.get_node(player_path)
 	var projectile: CharacterBody2D = Projectile.instantiate()
 	projectile.name += str(main_scene.get_spawned_projectiles())
 	if main_scene.has_node(str(projectile.name)): return #если уже существует то не создаем
 	
-	print(player_path)
 	projectile.global_position = player.global_position
 	projectile.set_player(player_path)
 	projectile.set_position_equations(x_text, y_text, player_spawn_radius)

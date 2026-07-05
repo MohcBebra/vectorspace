@@ -8,7 +8,7 @@ extends CanvasLayer
 var player: CharacterBody2D
 var main_scene: Node2D
 
-var projectiles_count: int
+@export var projectiles_count: int
 
 var line_edit_x_is_wrong: bool = false
 var line_edit_y_is_wrong: bool = false
