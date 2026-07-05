@@ -51,6 +51,7 @@ func health_changed(health: int, max_health: int):
 	hud.set_health(health, max_health)
 
 func die():
+	if not is_multiplayer_authority(): return
 	Global.remove_player.rpc(get_path())
 
 func projectile_dead():

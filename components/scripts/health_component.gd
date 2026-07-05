@@ -8,13 +8,10 @@ func _ready() -> void:
 	health = max_health
 
 func damage(attack: Attack):
-	if not is_multiplayer_authority(): return
 	health -= attack.damage
 	
 	if get_parent().has_method("health_changed"):
 		get_parent().health_changed(health, max_health)
 	
 	if health <= 0:
-		if get_parent().has_method("die"):
-			get_parent().die()
-		get_parent().queue_free()
+		get_parent().die()

@@ -65,6 +65,7 @@ properties/7/replication_mode = 1
 [node name="Player" type="CharacterBody2D" unique_id=2073243867]
 motion_mode = 1
 script = ExtResource("1_qhqgy")
+max_projectiles = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1184774876]
 material = SubResource("ShaderMaterial_g2els")

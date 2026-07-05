@@ -54,7 +54,7 @@ func _on_button_button_up() -> void: ## запуск снаряда
 	if result > 1:
 		return
 	
-	Global.spawn_projectile.rpc(x_text_dedent, y_text_dedent, player.get_spawn_radius(), player.get_path())
+	Global.spawn_projectile.rpc(multiplayer.get_unique_id(), x_text_dedent, y_text_dedent, player.get_spawn_radius(), player.get_path())
 	
 	projectiles_count -= 1
 	label_projectiles_count.text = str(projectiles_count)

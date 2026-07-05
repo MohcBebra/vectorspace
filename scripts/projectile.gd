@@ -74,9 +74,9 @@ func set_player(player_p: NodePath):
 	player_path = player_p
 
 func die():
+	if not is_multiplayer_authority(): return
 	player.projectile_dead()
-	if multiplayer.is_server():
-		Global.remove_projectile.rpc(get_path())
+	Global.remove_projectile.rpc(get_path())
 
 func _on_timer_timeout() -> void:
 	proj_is_ready = true
