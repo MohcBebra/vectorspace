@@ -26,7 +26,6 @@ func spawn_projectile(x_text: String, y_text: String, player_spawn_radius: float
 	projectile.name += str(main_scene.get_spawned_projectiles())
 	if main_scene.has_node(str(projectile.name)): return ## если уже существует то не создаем
 	
-	#projectile.set_multiplayer_authority(peer_id) ## !!!
 	projectile.global_position = player.global_position
 	projectile.set_player(player_path)
 	projectile.set_position_equations(x_text, y_text, player_spawn_radius)
@@ -36,6 +35,7 @@ func spawn_projectile(x_text: String, y_text: String, player_spawn_radius: float
 
 @rpc("any_peer", "call_local")
 func remove_projectile(proj_path: NodePath):
+	main_scene.get_node(proj_path).initialize_die()
 	if not multiplayer.is_server(): return
 	main_scene.get_node(proj_path).queue_free()
 

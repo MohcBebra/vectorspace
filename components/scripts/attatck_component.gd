@@ -5,7 +5,6 @@ class_name AttackComponent
 @export var attack_self := false
 
 func _on_area_entered(area: HitboxComponent) -> void:
-	if not get_parent().is_multiplayer_authority(): return
 	if area.get_parent() == get_parent():
 		return
 	

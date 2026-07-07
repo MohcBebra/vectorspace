@@ -59,8 +59,21 @@ func _on_button_button_up() -> void: ## запуск снаряда
 	
 	projectiles_count -= 1
 
+var text_corrects: Dictionary[String, bool] = {
+	"trigonom": true,
+	"operators": true,
+	"brackets": true
+}
+
 func line_edit_text_control(line_edit: LineEdit, text: String) -> void:
 	var regex = RegEx.new()
+	
+	## ЗАМЕНЫ
+	## ограничиваем допустимые символы
+	regex.compile("(?=[a-zA-Zа-яА-Я_\\[\\]{};:\'\",<>\\?`~!@#$%&=\\|])[^sincotabexp]")
+	if regex.search(text) != null:
+		line_edit.text = text.replace(regex.search(text).get_string(), "")
+		line_edit.caret_column = line_edit.text.length()
 	
 	## заменяет несколько точек вместе на одну
 	regex.compile("\\.{2,}")
@@ -73,15 +86,25 @@ func line_edit_text_control(line_edit: LineEdit, text: String) -> void:
 		line_edit.text = text.replace(regexmatch.get_string(), regexmatch.get_string().left(-1))
 		line_edit.caret_column = line_edit.text.length()
 	
+	## ПРОВЕРКИ
+	## проверка на тригонометрические функции
+	regex.compile("\\b(?!(?:sin|cos|tan|abs|exp)\\b)[^t \\(\\)\\d\\+\\*\\/\\.-]+")
+	if regex.search(text) == null: text_corrects.set("trigonom", true)
+	else: text_corrects.set("trigonom", false)
+	
 	## считаем кол-во открытых и закрытых скобок
 	if text.count('(') != text.count(')'):
-		set_line_edit_is_wrong(line_edit, true)
+		text_corrects.set("brackets", false)
 	else:
+		text_corrects.set("brackets", true)
 		regex.compile("[\\w\\)] +[\\w\\(]") ## проверяем нет ли переменных между которыми нет операторов
-		if regex.search(text) != null:
-			set_line_edit_is_wrong(line_edit, true)
-		else:
-			set_line_edit_is_wrong(line_edit, false)
+		if regex.search(text) == null: text_corrects.set("operators", true)
+		else: text_corrects.set("operators", false)
+	
+	if text_corrects.find_key(false) == null:
+		set_line_edit_is_wrong(line_edit, false)
+	else:
+		set_line_edit_is_wrong(line_edit, true)
 
 func set_line_edit_is_wrong(line_edit: LineEdit, wrong: bool):
 	if line_edit == line_edit_x: line_edit_x_is_wrong = wrong

@@ -30,6 +30,7 @@ shader_parameter/noise = SubResource("NoiseTexture2D_pw63i")
 script = ExtResource("1_7ykc4")
 
 [node name="Sprite2D_bg" type="Sprite2D" parent="." unique_id=606846388]
+z_index = -1
 material = SubResource("ShaderMaterial_7ykc4")
 scale = Vector2(1000, 500)
 texture = SubResource("CanvasTexture_pu3yx")

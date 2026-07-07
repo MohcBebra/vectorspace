@@ -23,7 +23,7 @@ radius = 8.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qhqgy"]
 shader = ExtResource("1_3vyb7")
 shader_parameter/color = Color(0.45419282, 0.81654334, 0, 1)
-shader_parameter/alpha = 0.499999988824
+shader_parameter/alpha = 0.249999994412
 shader_parameter/inner_space = 0.98999997787152
 shader_parameter/outring_color = Color(0, 0, 0, 1)
 shader_parameter/outring_space = 1.0
@@ -63,6 +63,8 @@ properties/7/spawn = true
 properties/7/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" unique_id=2073243867]
+z_index = 1
+z_as_relative = false
 motion_mode = 1
 script = ExtResource("1_qhqgy")
 max_projectiles = 4

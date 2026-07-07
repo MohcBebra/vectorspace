@@ -34,9 +34,18 @@ radius = 5.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_byeak"]
 radius = 6.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jxwu6"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 4.0
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 3.0
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jxwu6"]
 properties/0/path = NodePath(".:position")
-properties/0/spawn = true
+properties/0/spawn = false
 properties/0/replication_mode = 1
 properties/1/path = NodePath(".:player_path")
 properties/1/spawn = true
@@ -58,6 +67,8 @@ properties/6/spawn = true
 properties/6/replication_mode = 2
 
 [node name="Projectile" type="CharacterBody2D" unique_id=742553888]
+z_index = 1
+z_as_relative = false
 collision_layer = 2
 collision_mask = 0
 motion_mode = 1
@@ -91,6 +102,13 @@ damage = 20
 shape = SubResource("CircleShape2D_byeak")
 disabled = true
 debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=85066535]
+z_as_relative = false
+amount = 20
+lifetime = 15.0
+speed_scale = 20.0
+process_material = SubResource("ParticleProcessMaterial_jxwu6")
 
 [node name="SpawnTimer" type="Timer" parent="." unique_id=2116062920]
 process_callback = 0

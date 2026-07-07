@@ -8,7 +8,7 @@ extends CharacterBody2D
 
 @export var spawn_radius := 50.0
 @export var max_projectiles: int = 2
-@export var max_projectile_speed: float = 100.0
+@export var max_projectile_speed: float = 70.0
 @export var camera_speed: int = 3
 
 var start_mouse_position := Vector2.ZERO
@@ -51,11 +51,10 @@ func health_changed(health: int, max_health: int):
 	hud.set_health(health, max_health)
 
 func die():
-	if not is_multiplayer_authority(): return
-	Global.remove_player.rpc(get_path())
+	if is_multiplayer_authority():
+		Global.remove_player.rpc(get_path())
 
 func projectile_dead():
-	print("proj_is_dead")
 	hud.increase_projectile_count(1)
 
 func get_spawn_radius() -> float:
