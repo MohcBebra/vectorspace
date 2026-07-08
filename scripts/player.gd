@@ -57,7 +57,7 @@ func camera_control(): ## управление камерой
 func engine_control(): ## управление двигателем
 	var engine_dir = Vector2.RIGHT.rotated(engine_polygon.rotation)
 	if engine_is_running:
-		velocity += -engine_dir / 32
+		velocity += -engine_dir / 64
 
 func health_changed(health: int, max_health: int):
 	hud.set_health(health, max_health)
