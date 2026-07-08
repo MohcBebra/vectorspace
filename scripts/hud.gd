@@ -41,12 +41,14 @@ func _on_button_button_up() -> void: ## запуск снаряда
 	## пропускаем только если в окружности
 	var x_pos: float = 0
 	var y_pos: float = 0
-	expression.parse(x_text_dedent, inputs_variables.keys())
+	var error = expression.parse(x_text_dedent, inputs_variables.keys())
+	if error != OK: return
 	if not expression.has_execute_failed():
 		var exec = expression.execute(inputs_variables.values(), self)
 		if ((exec is not float) and (exec is not int)) or (exec == null): return
 		x_pos = exec
-	expression.parse(y_text_dedent, inputs_variables.keys())
+	error = expression.parse(y_text_dedent, inputs_variables.keys())
+	if error != OK: return
 	if not expression.has_execute_failed():
 		var exec = expression.execute(inputs_variables.values(), self)
 		if ((exec is not float) and (exec is not int)) or (exec == null): return

@@ -1,15 +1,18 @@
 extends CharacterBody2D
+class_name Player
 
 @onready var camera: Camera2D = $Camera2D
 @onready var hud: CanvasLayer = $HUD
 @onready var label_name: Label = $LabelName
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var sprite_2d_shader: ShaderMaterial = $Sprite2D.material
+@onready var engine_polygon: Polygon2D = $EnginePolygon
 
 @export var spawn_radius := 50.0
 @export var max_projectiles: int = 2
 @export var max_projectile_speed: float = 70.0
 @export var camera_speed: int = 3
+@export var engine_is_running := false;
 
 var start_mouse_position := Vector2.ZERO
 
@@ -29,7 +32,12 @@ func _ready() -> void:
 	health_changed(health_component.health, health_component.max_health)
 
 func _physics_process(_delta: float) -> void:
-	## управление камерой
+	camera_control()
+	engine_control()
+	
+	move_and_slide()
+
+func camera_control(): ## управление камерой
 	if Input.is_action_pressed("middle_mouse"): ## управление колесиком
 		if Input.is_action_just_pressed("middle_mouse"):
 			start_mouse_position = get_local_mouse_position()
@@ -45,7 +53,11 @@ func _physics_process(_delta: float) -> void:
 		var direction: Vector2 = Input.get_vector("left", "right", "up", "down")
 		if direction:
 			camera.position += direction * camera_speed
-	
+
+func engine_control(): ## управление двигателем
+	var engine_dir = Vector2.RIGHT.rotated(engine_polygon.rotation)
+	if engine_is_running:
+		velocity += -engine_dir / 32
 
 func health_changed(health: int, max_health: int):
 	hud.set_health(health, max_health)

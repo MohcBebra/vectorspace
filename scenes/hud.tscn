@@ -3,16 +3,40 @@
 [ext_resource type="Script" uid="uid://ck67f3ss76wda" path="res://scripts/hud.gd" id="1_ahhtf"]
 [ext_resource type="Shader" uid="uid://dxfdt62m0qsn7" path="res://shaders/hp_bar.gdshader" id="2_oo0fn"]
 [ext_resource type="Script" uid="uid://dvfwx3c6gw5qr" path="res://scripts/hp_bar.gd" id="3_5ysmq"]
+[ext_resource type="Shader" uid="uid://dfnp01ttljwmu" path="res://shaders/polar_direction.gdshader" id="4_6fi6k"]
+[ext_resource type="Script" uid="uid://d1d4e77ddg4m1" path="res://scripts/engine_control.gd" id="4_uo2fv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5ysmq"]
+resource_local_to_scene = true
 shader = ExtResource("2_oo0fn")
 shader_parameter/value = 1.0
+shader_parameter/skee = 10.0
+shader_parameter/vertical = false
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_ahhtf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5ysmq"]
 font_size = 7
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uo2fv"]
+shader = ExtResource("4_6fi6k")
+shader_parameter/bg_color = Color(0, 0.7144819, 0.7939608, 1)
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/alpha = 0.499999988824
+shader_parameter/angle = 0.0
+shader_parameter/width = 0.02999999932944
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_047uy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_047uy"]
+resource_local_to_scene = true
+shader = ExtResource("2_oo0fn")
+shader_parameter/value = 0.999999977648
+shader_parameter/skee = 0.0
+shader_parameter/vertical = true
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_5pdws"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1100613613]
 script = ExtResource("1_ahhtf")
@@ -48,7 +72,7 @@ horizontal_alignment = 1
 [node name="LineEditX" type="LineEdit" parent="MarginContainer/Bottom/pos_x" unique_id=788682400]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
-placeholder_text = "ass"
+placeholder_text = "0"
 expand_to_text_length = true
 emoji_menu_enabled = false
 caret_blink = true
@@ -66,7 +90,7 @@ horizontal_alignment = 1
 [node name="LineEditY" type="LineEdit" parent="MarginContainer/Bottom/pos_y" unique_id=70519537]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
-placeholder_text = "ass"
+placeholder_text = "0"
 expand_to_text_length = true
 emoji_menu_enabled = false
 caret_blink = true
@@ -117,6 +141,44 @@ size_flags_horizontal = 0
 text = "100"
 label_settings = SubResource("LabelSettings_5ysmq")
 
+[node name="EngineControl" type="HBoxContainer" parent="MarginContainer" unique_id=1338764693]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+script = ExtResource("4_uo2fv")
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/EngineControl" unique_id=209103940]
+self_modulate = Color(0, 0, 0, 0)
+layout_mode = 2
+
+[node name="PolarDirectionTexture" type="TextureRect" parent="MarginContainer/EngineControl/PanelContainer" unique_id=1659957009]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_uo2fv")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("CanvasTexture_047uy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/EngineControl" unique_id=1014455299]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/EngineControl/VBoxContainer" unique_id=669844020]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+placeholder_text = "0"
+editable = false
+
+[node name="Button" type="Button" parent="MarginContainer/EngineControl/VBoxContainer" unique_id=758936768]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+toggle_mode = true
+text = "Turn on"
+
+[node name="EnergyBar" type="TextureRect" parent="MarginContainer/EngineControl" unique_id=443121797]
+material = SubResource("ShaderMaterial_047uy")
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+texture = SubResource("CanvasTexture_5pdws")
+
 [connection signal="editing_toggled" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_editing_toggled"]
 [connection signal="mouse_entered" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_mouse_exited"]
@@ -126,3 +188,7 @@ label_settings = SubResource("LabelSettings_5ysmq")
 [connection signal="mouse_exited" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_mouse_exited"]
 [connection signal="text_changed" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_text_changed"]
 [connection signal="button_up" from="MarginContainer/Bottom/launch/Button" to="." method="_on_button_button_up"]
+[connection signal="mouse_entered" from="MarginContainer/EngineControl/PanelContainer/PolarDirectionTexture" to="MarginContainer/EngineControl" method="_on_polar_direction_texture_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/EngineControl/PanelContainer/PolarDirectionTexture" to="MarginContainer/EngineControl" method="_on_polar_direction_texture_mouse_exited"]
+[connection signal="button_down" from="MarginContainer/EngineControl/VBoxContainer/Button" to="MarginContainer/EngineControl" method="_on_button_button_down"]
+[connection signal="button_up" from="MarginContainer/EngineControl/VBoxContainer/Button" to="MarginContainer/EngineControl" method="_on_button_button_up"]

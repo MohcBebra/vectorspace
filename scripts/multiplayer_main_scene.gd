@@ -8,7 +8,7 @@ var pl2_position: Vector2 = Vector2(200, 0)
 var spawned_player: int = 0
 var spawned_projectiles: int = 0
 
-var players: Array[CharacterBody2D]
+@export var players: Array[CharacterBody2D]
 
 func _ready() -> void:
 	Global.main_scene = self
@@ -24,7 +24,7 @@ func spawn_player(peer_id: int):
 	var new_player := PLAYER.instantiate() as CharacterBody2D
 	new_player.name = str(peer_id)
 	initialize_player(new_player)
-	add_child(new_player)
+	add_child(new_player, true)
 
 func initialize_player(player: CharacterBody2D):
 	if spawned_player == 0:
@@ -38,3 +38,8 @@ func get_spawned_projectiles() -> int:
 
 func increase_spawned_projectiles():
 	spawned_projectiles += 1
+
+func erase_player(player: CharacterBody2D):
+	players.erase(player)
+	#if players.size() <= 1:
+	#	start_game()

@@ -43,3 +43,4 @@ func remove_projectile(proj_path: NodePath):
 func remove_player(player_path: NodePath):
 	if not multiplayer.is_server(): return
 	main_scene.get_node(player_path).queue_free()
+	main_scene.erase_player(main_scene.get_node(player_path))

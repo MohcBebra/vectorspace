@@ -3,6 +3,7 @@
 [ext_resource type="Shader" uid="uid://d4ab2e2sxqkn0" path="res://shaders/circle.gdshader" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://dj736qww4ffp1" path="res://scripts/player.gd" id="1_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://csisykp88uli4" path="res://scenes/hud.tscn" id="2_g2els"]
+[ext_resource type="Script" uid="uid://cvqwfixghm61s" path="res://scripts/engine_polygon.gd" id="3_fjrip"]
 [ext_resource type="PackedScene" uid="uid://drw2f2f3brc1s" path="res://components/scenes/health_component.tscn" id="4_qlg0r"]
 [ext_resource type="PackedScene" uid="uid://c0clh6fqac4i" path="res://components/scenes/hitbox_component.tscn" id="5_tuyoq"]
 [ext_resource type="PackedScene" uid="uid://3etorvxr000y" path="res://components/scenes/attatck_component.tscn" id="6_tuyoq"]
@@ -29,6 +30,17 @@ shader_parameter/outring_color = Color(0, 0, 0, 1)
 shader_parameter/outring_space = 1.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_dqkch"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_tuyoq"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fjrip"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 4.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
 radius = 8.062258
@@ -68,6 +80,7 @@ z_as_relative = false
 motion_mode = 1
 script = ExtResource("1_qhqgy")
 max_projectiles = 4
+max_projectile_speed = 500.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1184774876]
 material = SubResource("ShaderMaterial_g2els")
@@ -81,6 +94,23 @@ shape = SubResource("CircleShape2D_3vyb7")
 material = SubResource("ShaderMaterial_qhqgy")
 scale = Vector2(100, 100)
 texture = SubResource("CanvasTexture_dqkch")
+
+[node name="EnginePolygon" type="Polygon2D" parent="." unique_id=2136942068]
+z_as_relative = false
+offset = Vector2(9.18, 0)
+texture = SubResource("CanvasTexture_tuyoq")
+polygon = PackedVector2Array(-1.1800003, -3, -3.1800003, -5, -3.1800003, 5, -1.1800003, 3, -0.1800003, 4, -0.1800003, -4)
+uv = PackedVector2Array(0.9583125, 0.46175003, 0.48175, 0.04768753, 0.04425001, 0.55550003, 0.3489375, 0.89925003)
+script = ExtResource("3_fjrip")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="EnginePolygon" unique_id=429968367]
+z_as_relative = false
+position = Vector2(10, 0)
+emitting = false
+amount = 20
+lifetime = 15.0
+speed_scale = 20.0
+process_material = SubResource("ParticleProcessMaterial_fjrip")
 
 [node name="HUD" parent="." unique_id=1100613613 instance=ExtResource("2_g2els")]
 visible = false
@@ -98,6 +128,7 @@ shape = SubResource("CircleShape2D_qlg0r")
 debug_color = Color(1, 1, 0, 0.41960785)
 
 [node name="AttatckComponent" parent="." unique_id=1565239151 instance=ExtResource("6_tuyoq")]
+damage = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=608819480]
 shape = SubResource("CircleShape2D_fjrip")
