@@ -73,6 +73,12 @@ properties/6/replication_mode = 1
 properties/7/path = NodePath(".:max_projectile_speed")
 properties/7/spawn = true
 properties/7/replication_mode = 1
+properties/8/path = NodePath("EnginePolygon:rotation")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath("EnginePolygon/GPUParticles2D:emitting")
+properties/9/spawn = true
+properties/9/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" unique_id=2073243867]
 z_index = 1
