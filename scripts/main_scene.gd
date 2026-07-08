@@ -24,6 +24,7 @@ func spawn_player(peer_id: int):
 	var new_player := PLAYER.instantiate() as CharacterBody2D
 	new_player.name = str(peer_id)
 	initialize_player(new_player)
+	await get_tree().physics_frame
 	add_child(new_player, true)
 
 func initialize_player(player: CharacterBody2D):

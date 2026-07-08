@@ -24,6 +24,7 @@ func spawn_player(peer_id: int):
 	var new_player := PLAYER.instantiate() as CharacterBody2D
 	new_player.name = str(peer_id)
 	initialize_player(new_player)
+	add_child(new_player, true)
 
 func initialize_player(player: CharacterBody2D):
 	if spawned_player == 0:
@@ -31,7 +32,6 @@ func initialize_player(player: CharacterBody2D):
 	else:
 		player.position = pl2_position
 	players.append(player)
-	add_child(player, true)
 
 func get_spawned_projectiles() -> int:
 	return spawned_projectiles
