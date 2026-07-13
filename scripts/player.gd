@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends RigidBody2D
 class_name Player
 
 @onready var camera: Camera2D = $Camera2D
@@ -7,6 +7,7 @@ class_name Player
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var sprite_2d_shader: ShaderMaterial = $Sprite2D.material
 @onready var engine_polygon: Polygon2D = $EnginePolygon
+@onready var attatck_component: AttackComponent = $AttatckComponent
 
 @export var spawn_radius := 50.0
 @export var max_projectiles: int = 2
@@ -15,6 +16,8 @@ class_name Player
 @export var engine_is_running := false;
 
 var start_mouse_position := Vector2.ZERO
+
+@export var projectiles: Array[CharacterBody2D]
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -34,10 +37,13 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	camera_control()
 	engine_control()
-	
-	move_and_slide()
 
 func camera_control(): ## управление камерой
+	if Input.is_action_just_pressed("scroll_down") and camera.zoom.x > 0.3:
+		camera.zoom -= Vector2(0.1, 0.1)
+	elif Input.is_action_just_pressed("scroll_up") and camera.zoom.x < 2.25:
+		camera.zoom += Vector2(0.1, 0.1)
+	
 	if Input.is_action_pressed("middle_mouse"): ## управление колесиком
 		if Input.is_action_just_pressed("middle_mouse"):
 			start_mouse_position = get_local_mouse_position()
@@ -57,7 +63,7 @@ func camera_control(): ## управление камерой
 func engine_control(): ## управление двигателем
 	var engine_dir = Vector2.RIGHT.rotated(engine_polygon.rotation)
 	if engine_is_running:
-		velocity += -engine_dir / 64
+		linear_velocity += -engine_dir / 8
 
 func health_changed(health: int, max_health: int):
 	hud.set_health(health, max_health)
@@ -69,10 +75,5 @@ func die():
 func projectile_dead():
 	hud.increase_projectile_count(1)
 
-func get_spawn_radius() -> float:
-	return spawn_radius
-
-func get_max_projectiles() -> int:
-	return max_projectiles
-func get_max_projectile_speed() -> float:
-	return max_projectile_speed
+func add_exeption_to_attack_component(ex: Node2D):
+	attatck_component.exeptions.append(ex)

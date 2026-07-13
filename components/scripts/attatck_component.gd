@@ -3,10 +3,15 @@ class_name AttackComponent
 
 @export var damage: int = 1
 @export var attack_self := false
+@export var exeptions: Array[Node2D]
+
+func _ready() -> void:
+	exeptions.append(get_parent())
 
 func _on_area_entered(area: HitboxComponent) -> void:
-	if area.get_parent() == get_parent():
-		return
+	for ex: Node2D in exeptions:
+		if ex == area.get_parent():
+			return
 	
 	var attack = Attack.new()
 	attack.damage = damage

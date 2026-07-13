@@ -7,8 +7,9 @@ extends HBoxContainer
 @onready var energy_bar_shader: ShaderMaterial = $EnergyBar.material
 @onready var panel_container: PanelContainer = $PanelContainer
 
+@export var recovery_time := 300
 @export var max_energy := 3.0
-@export var energy := 3.0:
+@export var energy := 0.0:
 	set = set_energy
 
 var size_of_polar_texture := Vector2.ZERO
@@ -21,7 +22,6 @@ func _ready() -> void:
 	player = get_parent().get_parent().get_parent()
 
 func _process(_delta: float) -> void:
-	if button.button_pressed: return
 	if Input.is_action_pressed("left_click") and mouse_inside_texture:
 		var mouse_pos: Vector2 = polar_direction_texture.get_local_mouse_position() / size_of_polar_texture
 		mouse_pos = mouse_pos * 2
@@ -42,7 +42,7 @@ func _physics_process(delta: float) -> void:
 			_on_button_button_up()
 	else:
 		if energy < max_energy:
-			energy += delta / 4
+			energy += (delta * max_energy) / recovery_time
 		else:
 			energy = max_energy
 			button.disabled = false

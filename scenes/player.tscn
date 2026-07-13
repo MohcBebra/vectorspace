@@ -33,14 +33,29 @@ shader_parameter/outring_space = 1.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_tuyoq"]
 
+[sub_resource type="Curve" id="Curve_fjrip"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_smehm"]
+curve = SubResource("Curve_fjrip")
+
+[sub_resource type="Gradient" id="Gradient_fjrip"]
+colors = PackedColorArray(1, 0.27398866, 0.21327004, 1, 0.95103604, 0.7788769, 7.70092e-07, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_smehm"]
+gradient = SubResource("Gradient_fjrip")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fjrip"]
 lifetime_randomness = 0.5
 particle_flag_disable_z = true
-emission_shape = 1
-emission_sphere_radius = 4.0
+emission_shape = 3
+emission_box_extents = Vector3(1, 3, 1)
 gravity = Vector3(0, 0, 0)
 scale_min = 2.0
 scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_smehm")
+alpha_curve = SubResource("CurveTexture_smehm")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
 radius = 8.062258
@@ -80,12 +95,12 @@ properties/9/path = NodePath("EnginePolygon/GPUParticles2D:emitting")
 properties/9/spawn = true
 properties/9/replication_mode = 1
 
-[node name="Player" type="CharacterBody2D" unique_id=2073243867]
+[node name="Player" type="RigidBody2D" unique_id=1607099158]
 z_index = 1
 z_as_relative = false
-motion_mode = 1
+collision_mask = 0
+gravity_scale = 0.0
 script = ExtResource("1_qhqgy")
-max_projectiles = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1184774876]
 material = SubResource("ShaderMaterial_g2els")
@@ -93,6 +108,7 @@ scale = Vector2(16, 16)
 texture = SubResource("CanvasTexture_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=872677559]
+visible = false
 shape = SubResource("CircleShape2D_3vyb7")
 
 [node name="ProjectileAreaSprite" type="Sprite2D" parent="." unique_id=1883830706]
@@ -129,13 +145,15 @@ collision_layer = 1
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=697909066]
+visible = false
 shape = SubResource("CircleShape2D_qlg0r")
 debug_color = Color(1, 1, 0, 0.41960785)
 
 [node name="AttatckComponent" parent="." unique_id=1565239151 instance=ExtResource("6_tuyoq")]
 damage = 50
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=608819480]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=153506093]
+visible = false
 shape = SubResource("CircleShape2D_fjrip")
 debug_color = Color(1, 0, 0, 0.41960785)
 

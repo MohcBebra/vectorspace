@@ -17,10 +17,10 @@ shader_parameter/time = 0.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_softn"]
 resource_local_to_scene = true
 shader = ExtResource("2_q3m7n")
-shader_parameter/color = Color(0.56261516, 0.6127817, 0.8942024, 1)
+shader_parameter/color = Color(0.561, 0.612, 0.894, 1)
 shader_parameter/alpha = 0.999999977648
 shader_parameter/inner_space = 0.0
-shader_parameter/outring_color = Color(0.74046963, 0.78851265, 0.85726273, 1)
+shader_parameter/outring_color = Color(1, 1, 1, 1)
 shader_parameter/outring_space = 0.90000001341108
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_c8fcr"]
@@ -83,6 +83,7 @@ scale = Vector2(12.000001, 12.000002)
 texture = SubResource("CanvasTexture_c8fcr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1337423962]
+visible = false
 shape = SubResource("CircleShape2D_q3m7n")
 
 [node name="HealthComponent" parent="." unique_id=754314589 instance=ExtResource("4_byeak")]
@@ -91,6 +92,7 @@ shape = SubResource("CircleShape2D_q3m7n")
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=2123282212]
+visible = false
 shape = SubResource("CircleShape2D_6q2a6")
 disabled = true
 debug_color = Color(1, 1, 0, 0.41960785)
@@ -99,6 +101,7 @@ debug_color = Color(1, 1, 0, 0.41960785)
 damage = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=1324021160]
+visible = false
 shape = SubResource("CircleShape2D_byeak")
 disabled = true
 debug_color = Color(1, 0, 0, 0.41960785)

@@ -89,6 +89,8 @@ right_click={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+2d/default_gravity=0.0
+2d/default_linear_damp=0.19999999999999996
 
 [rendering]
 

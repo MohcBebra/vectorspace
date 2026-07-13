@@ -5,7 +5,7 @@ extends CanvasLayer
 @onready var label_projectiles_count: Label = $MarginContainer/Bottom/launch/projectiles_count
 @onready var hp_bar: HPBar = %HPBar
 
-var player: CharacterBody2D
+var player: Player
 var main_scene: Node2D
 
 @export var projectiles_count: int:
@@ -23,10 +23,12 @@ func _ready() -> void:
 	$MarginContainer.grab_focus()
 	player = get_parent()
 	main_scene = get_parent().get_parent()
-	projectiles_count = player.get_max_projectiles()
+	projectiles_count = player.max_projectiles
 
 func _on_button_button_up() -> void: ## запуск снаряда
 	if (line_edit_x_is_wrong or line_edit_y_is_wrong) or (projectiles_count < 1): ## если формулы впордяке и есть проджектайлы
+		return
+	if line_edit_x.text.is_empty() and line_edit_y.text.is_empty():
 		return
 	
 	## подгатавливаем текст
@@ -57,7 +59,7 @@ func _on_button_button_up() -> void: ## запуск снаряда
 	if result > 1:
 		return
 	
-	Global.spawn_projectile.rpc(x_text_dedent, y_text_dedent, player.get_spawn_radius(), player.get_path())
+	Global.spawn_projectile.rpc(x_text_dedent, y_text_dedent, player.spawn_radius, player.get_path())
 	
 	projectiles_count -= 1
 
@@ -124,8 +126,8 @@ func _on_line_edit_y_text_changed(new_text: String) -> void:
 	line_edit_text_control(line_edit_y, new_text)
 
 func increase_projectile_count(amount: int):
-	if projectiles_count + amount >= player.get_max_projectiles():
-		projectiles_count = player.get_max_projectiles()
+	if projectiles_count + amount >= player.max_projectiles:
+		projectiles_count = player.max_projectiles
 	else:
 		projectiles_count += amount
 

@@ -21,7 +21,7 @@ func player_loaded():
 @rpc("any_peer", "call_local")
 func spawn_projectile(x_text: String, y_text: String, player_spawn_radius: float, player_path: NodePath):
 	if not multiplayer.is_server(): return
-	var player: CharacterBody2D = main_scene.get_node(player_path)
+	var player: Player = main_scene.get_node(player_path)
 	var projectile: CharacterBody2D = Projectile.instantiate()
 	projectile.name += str(main_scene.get_spawned_projectiles())
 	if main_scene.has_node(str(projectile.name)): return ## если уже существует то не создаем

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://djsmupdugxrtd"]
+
+[ext_resource type="Script" uid="uid://ba0hpe7xmg03o" path="res://scripts/polygon_grid.gd" id="2_f3r3x"]
+
+[node name="PolygonGrid" type="Area2D" unique_id=1389771351]
+z_index = -1
+monitorable = false
+script = ExtResource("2_f3r3x")
+
+[connection signal="mouse_shape_entered" from="." to="." method="_on_mouse_shape_entered"]
+[connection signal="mouse_shape_exited" from="." to="." method="_on_mouse_shape_exited"]
