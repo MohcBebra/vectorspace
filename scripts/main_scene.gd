@@ -2,7 +2,7 @@ extends Node2D
 
 const PLAYER = preload("res://scenes/player.tscn")
 @onready var sprite_2d_bg: Sprite2D = $Sprite2D_bg
-@onready var polygon_grid: PolygonGrid = $PolygonGrid
+@onready var polygon_grid: PolygonGrid = %PolygonGrid
 
 @export var h_split := 8
 @export var v_split := 8
@@ -90,16 +90,25 @@ func triangulate_map():
 	
 	for p: Vector2 in insides_points:
 		if not result_vertices.has(p):
-			if randi_range(0, 2) == 0:
+			if randi_range(0, 1) == 0:
 				p += Vector2((randf()*2-1) * h_dist / 4, (randf()*2-1) * v_dist / 4)
 				p = Vector2(clampf(p.x, -map_size.x / 2, map_size.x / 2), clampf(p.y, -map_size.y / 2, map_size.y / 2))
 			result_vertices.append(p)
 	
-	
-	polygon_grid.polygon = result_vertices
+	set_polygon_grid.rpc(result_vertices)
+
+@rpc("any_peer", "call_local")
+func set_polygon_grid(vertices: PackedVector2Array):
+	#polygon_grid.set_multiplayer_authority(multiplayer.get_unique_id())
+	polygon_grid.polygon = vertices
 	polygon_grid.triangulate()
-	polygon_grid.set_point_found(pl1_position)
-	polygon_grid.set_point_found(pl2_position)
+	
+	print("TRIANGULATE!!!")
+	var player_idx: int = players.find(find_child(multiplayer.multiplayer_peer.to_string()))
+	if player_idx == 0:
+		polygon_grid.set_point_found(pl2_position)
+	else:
+		polygon_grid.set_point_found(pl1_position)
 
 func get_spawned_projectiles() -> int:
 	return spawned_projectiles

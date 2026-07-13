@@ -44,3 +44,4 @@ damage = 100
 polygon = PackedVector2Array(-520, -270, 520, -270, 520, 270, -520, 270, -500, 250, 500, 250, 500, -250, -500, -250, -500, 250, -520, 270)
 
 [node name="PolygonGrid" parent="." unique_id=793278748 instance=ExtResource("4_pu3yx")]
+unique_name_in_owner = true
