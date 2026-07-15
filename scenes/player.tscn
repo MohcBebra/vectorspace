@@ -150,6 +150,7 @@ shape = SubResource("CircleShape2D_qlg0r")
 debug_color = Color(1, 1, 0, 0.41960785)
 
 [node name="AttatckComponent" parent="." unique_id=1565239151 instance=ExtResource("6_tuyoq")]
+collision_mask = 2
 damage = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttatckComponent" unique_id=153506093]

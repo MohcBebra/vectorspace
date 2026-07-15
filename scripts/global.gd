@@ -35,7 +35,7 @@ func spawn_projectile(x_text: String, y_text: String, player_spawn_radius: float
 
 @rpc("any_peer", "call_local")
 func remove_projectile(proj_path: NodePath):
-	main_scene.get_node(proj_path).initialize_die()
+	#main_scene.get_node(proj_path).initialize_die()
 	if not multiplayer.is_server(): return
 	main_scene.get_node(proj_path).queue_free()
 

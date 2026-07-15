@@ -6,11 +6,14 @@
 [ext_resource type="Shader" uid="uid://rhurf8e25c7v" path="res://shaders/spawnVFX.gdshader" id="3_jxwu6"]
 [ext_resource type="PackedScene" uid="uid://drw2f2f3brc1s" path="res://components/scenes/health_component.tscn" id="4_byeak"]
 [ext_resource type="PackedScene" uid="uid://3etorvxr000y" path="res://components/scenes/attatck_component.tscn" id="5_byeak"]
+[ext_resource type="AudioStream" uid="uid://2pq0kaegavb5" path="res://audio/sfx/projectile/proj_spawn.ogg" id="7_pl1gp"]
+[ext_resource type="AudioStream" uid="uid://bm5ucpgt6n1y2" path="res://audio/sfx/projectile/proj_move.ogg" id="8_ejmht"]
+[ext_resource type="AudioStream" uid="uid://cushpn7fvakgr" path="res://audio/sfx/projectile/proj_death.ogg" id="9_031o2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jxwu6"]
 resource_local_to_scene = true
 shader = ExtResource("3_jxwu6")
-shader_parameter/alpha = 0.499999988824
+shader_parameter/alpha = 0.5000000074506
 shader_parameter/spawn_time = 0.0
 shader_parameter/time = 0.0
 
@@ -43,28 +46,103 @@ gravity = Vector3(0, 0, 0)
 scale_min = 3.0
 scale_max = 3.0
 
+[sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_xo60o"]
+clip_count = 3
+clip_0/name = &"Proj Spawn"
+clip_0/stream = ExtResource("7_pl1gp")
+clip_0/auto_advance = 1
+clip_0/next_clip = 1
+clip_1/name = &"Proj Move"
+clip_1/stream = ExtResource("8_ejmht")
+clip_1/auto_advance = 0
+clip_2/name = &"Proj Death"
+clip_2/stream = ExtResource("9_031o2")
+clip_2/auto_advance = 0
+_transitions = {
+Vector2i(0, 1): {
+"fade_beats": 1.0,
+"fade_mode": 3,
+"from_time": 3,
+"to_time": 1
+},
+Vector2i(1, 2): {
+"fade_beats": 1.0,
+"fade_mode": 0,
+"from_time": 0,
+"to_time": 1
+}
+}
+
+[sub_resource type="Animation" id="Animation_ejmht"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpawnVFX/Sprite2D:material:shader_parameter/alpha")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.999999977648]
+}
+
+[sub_resource type="Animation" id="Animation_pl1gp"]
+resource_name = "die"
+length = 0.3
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"die_finished"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpawnVFX/Sprite2D:material:shader_parameter/alpha")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.42044812, 1),
+"update": 0,
+"values": [0.999999977648, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ejmht"]
+_data = {
+&"RESET": SubResource("Animation_ejmht"),
+&"die": SubResource("Animation_pl1gp")
+}
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jxwu6"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = false
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:player_path")
+properties/0/path = NodePath(".:player_path")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:x_position_equation")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath(".:x_position_equation")
+properties/2/path = NodePath(".:y_position_equation")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath(".:y_position_equation")
+properties/3/path = NodePath("HealthComponent:health")
 properties/3/spawn = true
 properties/3/replication_mode = 2
-properties/4/path = NodePath("HealthComponent:health")
+properties/4/path = NodePath("HealthComponent:max_health")
 properties/4/spawn = true
 properties/4/replication_mode = 2
-properties/5/path = NodePath("HealthComponent:max_health")
+properties/5/path = NodePath("AttatckComponent:damage")
 properties/5/spawn = true
 properties/5/replication_mode = 2
-properties/6/path = NodePath("AttatckComponent:damage")
-properties/6/spawn = true
-properties/6/replication_mode = 2
 
 [node name="Projectile" type="CharacterBody2D" unique_id=742553888]
 z_index = 1
@@ -117,6 +195,16 @@ process_material = SubResource("ParticleProcessMaterial_jxwu6")
 process_callback = 0
 one_shot = true
 autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=435811736]
+stream = SubResource("AudioStreamInteractive_xo60o")
+autoplay = true
+max_distance = 800.0
+attenuation = 2.0
+bus = &"SFX"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=754314137]
+libraries/ = SubResource("AnimationLibrary_ejmht")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=554157262]
 replication_config = SubResource("SceneReplicationConfig_jxwu6")

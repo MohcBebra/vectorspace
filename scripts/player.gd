@@ -1,6 +1,9 @@
 extends RigidBody2D
 class_name Player
 
+signal projectiles_appended(projs: Array[CharacterBody2D], proj: CharacterBody2D)
+signal projectiles_erased(projs: Array[CharacterBody2D], proj: CharacterBody2D)
+
 @onready var camera: Camera2D = $Camera2D
 @onready var hud: CanvasLayer = $HUD
 @onready var label_name: Label = $LabelName
@@ -53,7 +56,7 @@ func camera_control(): ## управление камерой
 	elif Input.is_action_just_released("middle_mouse"):
 		camera.position_smoothing_enabled = true
 	
-	if not hud.get_node("MarginContainer").has_focus(): ## нельзя перемещаться wasd если редактируются лайн едиты
+	if not hud.get_node("UI").has_focus(): ## нельзя перемещаться wasd если редактируются лайн едиты
 		return
 	if camera.position_smoothing_enabled: ## управление wasd
 		var direction: Vector2 = Input.get_vector("left", "right", "up", "down")
@@ -72,8 +75,13 @@ func die():
 	if is_multiplayer_authority():
 		Global.remove_player.rpc(get_path())
 
-func projectile_dead():
-	hud.increase_projectile_count(1)
-
 func add_exeption_to_attack_component(ex: Node2D):
 	attatck_component.exeptions.append(ex)
+
+func append_projectile(proj: CharacterBody2D):
+	projectiles.append(proj)
+	emit_signal("projectiles_appended", projectiles, proj)
+func erase_projectile(proj: CharacterBody2D):
+	projectiles.erase(proj)
+	hud.increase_projectile_count(1)
+	emit_signal("projectiles_erased", projectiles, proj)

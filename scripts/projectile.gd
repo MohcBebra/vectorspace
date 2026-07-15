@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 @onready var sprite_2d: Sprite2D = $SpawnVFX/Sprite2D
 @onready var attatck_component: AttackComponent = $AttatckComponent
+@onready var audio_stream_playback: AudioStreamPlaybackInteractive = $AudioStreamPlayer2D.get_stream_playback()
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @export var x_position_equation: String
 @export var y_position_equation: String
@@ -23,10 +25,14 @@ var proj_is_ready := false
 var clamping := false
 var max_speed: float
 @export var inside_spawn := true
+@export var shader_color: Color
+
+enum State {MOVE, DIE}
+var current_state: State = State.MOVE
 
 func _ready() -> void:
 	player = get_parent().get_node(player_path)
-	player.projectiles.append(self)
+	player.append_projectile(self)
 	player.add_exeption_to_attack_component(self)
 	max_speed = player.max_projectile_speed
 	
@@ -34,10 +40,19 @@ func _ready() -> void:
 	
 	$SpawnVFX.material.set_shader_parameter("spawn_time", $SpawnTimer.wait_time)
 	$SpawnVFX.material.set_shader_parameter("time", $SpawnTimer.time_left)
+	shader_color = sprite_2d.material.get_shader_parameter("color")
 
 var last_pos := Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
+	match current_state:
+		State.MOVE:
+			move(delta)
+		State.DIE:
+			velocity = Vector2.ZERO
+	move_and_slide()
+
+func move(delta: float):
 	if velocity != Vector2.ZERO: ## первый кадр любая скорость
 		clamping = true
 	
@@ -72,8 +87,6 @@ func _physics_process(delta: float) -> void:
 	velocity = pre_velocity 
 	last_pos = pos
 	
-	move_and_slide()
-
 	if check_all_pr_is_inside_spawn():
 		t += delta * 2
 	else:
@@ -93,6 +106,7 @@ func check_all_pr_is_inside_spawn() -> bool:
 	
 	var projectiles: Array[CharacterBody2D] = player.projectiles
 	if projectiles.size() < player.max_projectiles:
+		sprite_2d.material.set_shader_parameter("color", shader_color)
 		return false
 	
 	var all_pr_inside_spawn := true
@@ -106,7 +120,7 @@ func check_all_pr_is_inside_spawn() -> bool:
 			if pr != self:
 				attatck_component.exeptions.append(pr)
 	else:
-		sprite_2d.material.set_shader_parameter("color", Color(0.561, 0.612, 0.894))
+		sprite_2d.material.set_shader_parameter("color", shader_color)
 		for pr: CharacterBody2D in projectiles:
 			if pr != self:
 				attatck_component.exeptions.erase(pr)
@@ -114,14 +128,25 @@ func check_all_pr_is_inside_spawn() -> bool:
 	return all_pr_inside_spawn
 
 func die():
+	current_state = State.DIE
+	
+	$AttatckComponent/CollisionShape2D.set_deferred("disabled", true)
+	$HitboxComponent/CollisionShape2D.set_deferred("disabled", true)
+	
+	audio_stream_playback.switch_to_clip(2)
+	animation_player.play("die")
+	
+	if not is_instance_valid(player): return
+	player.erase_projectile(self)
+
+func die_finished():
 	if is_multiplayer_authority(): ## только у хоста
 		Global.remove_projectile.rpc(get_path())
 
 func initialize_die():
 	if not is_instance_valid(player): return
 	#print("proj_is_dead")
-	player.projectiles.erase(self)
-	player.projectile_dead()
+	player.erase_projectile(self)
 
 func _on_timer_timeout() -> void:
 	proj_is_ready = true

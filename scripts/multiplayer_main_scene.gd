@@ -35,9 +35,9 @@ func spawn_player(peer_id: int):
 
 func initialize_player(player: Player):
 	if spawned_player == 0:
-		player.position = pl1_position
+		player.global_position = pl1_position
 	else:
-		player.position = pl2_position
+		player.global_position = pl2_position
 	players.append(player)
 
 func triangulate_map():
@@ -90,8 +90,8 @@ func triangulate_map():
 	
 	for p: Vector2 in insides_points:
 		if not result_vertices.has(p):
-			if randi_range(0, 2) == 0:
-				p += Vector2((randf()*2-1) * h_dist / 4, (randf()*2-1) * v_dist / 4)
+			p += Vector2((randf()*2-1) * h_dist / 4, (randf()*2-1) * v_dist / 4)
+			if randi_range(0, 4) == 0:
 				p = Vector2(clampf(p.x, -map_size.x / 2, map_size.x / 2), clampf(p.y, -map_size.y / 2, map_size.y / 2))
 			result_vertices.append(p)
 	

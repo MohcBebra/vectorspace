@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://dmj3xi7dabiqw" path="res://shaders/space.gdshader" id="1_pw63i"]
 [ext_resource type="PackedScene" uid="uid://3etorvxr000y" path="res://components/scenes/attatck_component.tscn" id="3_7ykc4"]
 [ext_resource type="PackedScene" uid="uid://djsmupdugxrtd" path="res://scenes/polygon_grid.tscn" id="4_pu3yx"]
+[ext_resource type="AudioStream" uid="uid://c4vdu7n7pyfap" path="res://audio/music/infinite_space.ogg" id="5_gubc5"]
 
 [sub_resource type="Gradient" id="Gradient_pw63i"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
@@ -33,7 +34,7 @@ script = ExtResource("1_7ykc4")
 [node name="Sprite2D_bg" type="Sprite2D" parent="." unique_id=606846388]
 z_index = -1
 material = SubResource("ShaderMaterial_7ykc4")
-scale = Vector2(1000, 500)
+scale = Vector2(800, 500)
 texture = SubResource("CanvasTexture_pu3yx")
 
 [node name="AttatckComponent" parent="Sprite2D_bg" unique_id=1565239151 instance=ExtResource("3_7ykc4")]
@@ -45,3 +46,8 @@ polygon = PackedVector2Array(-520, -270, 520, -270, 520, 270, -520, 270, -500, 2
 
 [node name="PolygonGrid" parent="." unique_id=793278748 instance=ExtResource("4_pu3yx")]
 unique_name_in_owner = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=174695682]
+stream = ExtResource("5_gubc5")
+bus = &"Music"
+parameters/looping = true

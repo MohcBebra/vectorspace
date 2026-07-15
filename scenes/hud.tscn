@@ -1,10 +1,18 @@
 [gd_scene format=3 uid="uid://csisykp88uli4"]
 
 [ext_resource type="Script" uid="uid://ck67f3ss76wda" path="res://scripts/hud.gd" id="1_ahhtf"]
+[ext_resource type="Script" uid="uid://clhkp6p0mg1f6" path="res://scripts/projectiles_control.gd" id="2_5pdws"]
 [ext_resource type="Shader" uid="uid://dxfdt62m0qsn7" path="res://shaders/hp_bar.gdshader" id="2_oo0fn"]
 [ext_resource type="Script" uid="uid://dvfwx3c6gw5qr" path="res://scripts/hp_bar.gd" id="3_5ysmq"]
+[ext_resource type="Shader" uid="uid://b3pkyhfwrwpix" path="res://shaders/x_out.gdshader" id="3_hd3ao"]
 [ext_resource type="Shader" uid="uid://dfnp01ttljwmu" path="res://shaders/polar_direction.gdshader" id="4_6fi6k"]
 [ext_resource type="Script" uid="uid://d1d4e77ddg4m1" path="res://scripts/engine_control.gd" id="4_uo2fv"]
+[ext_resource type="Script" uid="uid://b82q0010rrjxc" path="res://scripts/pause_menu.gd" id="6_047uy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hd3ao"]
+shader = ExtResource("3_hd3ao")
+shader_parameter/angle = 0.125
+shader_parameter/hover = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5ysmq"]
 resource_local_to_scene = true
@@ -38,10 +46,19 @@ shader_parameter/vertical = true
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5pdws"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uo2fv"]
+bg_color = Color(0, 0, 0, 0.49803922)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5pdws"]
+bg_color = Color(0, 0, 0, 0.49803922)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_047uy"]
+bg_color = Color(0, 0, 0, 0.49803922)
+
 [node name="HUD" type="CanvasLayer" unique_id=1100613613]
 script = ExtResource("1_ahhtf")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1778272898]
+[node name="UI" type="MarginContainer" parent="." unique_id=1778272898]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -55,21 +72,27 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Bottom" type="VBoxContainer" parent="MarginContainer" unique_id=166430097]
+[node name="ProjectilesControl" type="HBoxContainer" parent="UI" unique_id=2128303766]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("2_5pdws")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/ProjectilesControl" unique_id=166430097]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="pos_x" type="HBoxContainer" parent="MarginContainer/Bottom" unique_id=1431245841]
+[node name="pos_x" type="HBoxContainer" parent="UI/ProjectilesControl/VBoxContainer" unique_id=1431245841]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/Bottom/pos_x" unique_id=1461302816]
+[node name="Label" type="Label" parent="UI/ProjectilesControl/VBoxContainer/pos_x" unique_id=1461302816]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 text = "pos x ="
 horizontal_alignment = 1
 
-[node name="LineEditX" type="LineEdit" parent="MarginContainer/Bottom/pos_x" unique_id=788682400]
+[node name="LineEditX" type="LineEdit" parent="UI/ProjectilesControl/VBoxContainer/pos_x" unique_id=788682400]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 placeholder_text = "0"
@@ -77,17 +100,17 @@ expand_to_text_length = true
 emoji_menu_enabled = false
 caret_blink = true
 
-[node name="pos_y" type="HBoxContainer" parent="MarginContainer/Bottom" unique_id=1020813164]
+[node name="pos_y" type="HBoxContainer" parent="UI/ProjectilesControl/VBoxContainer" unique_id=1020813164]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/Bottom/pos_y" unique_id=116212667]
+[node name="Label" type="Label" parent="UI/ProjectilesControl/VBoxContainer/pos_y" unique_id=116212667]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 text = "pos y ="
 horizontal_alignment = 1
 
-[node name="LineEditY" type="LineEdit" parent="MarginContainer/Bottom/pos_y" unique_id=70519537]
+[node name="LineEditY" type="LineEdit" parent="UI/ProjectilesControl/VBoxContainer/pos_y" unique_id=70519537]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 placeholder_text = "0"
@@ -95,16 +118,16 @@ expand_to_text_length = true
 emoji_menu_enabled = false
 caret_blink = true
 
-[node name="launch" type="HBoxContainer" parent="MarginContainer/Bottom" unique_id=348388932]
+[node name="launch" type="HBoxContainer" parent="UI/ProjectilesControl/VBoxContainer" unique_id=348388932]
 layout_mode = 2
 alignment = 1
 
-[node name="projectiles_count" type="Label" parent="MarginContainer/Bottom/launch" unique_id=228633170]
+[node name="projectiles_count" type="Label" parent="UI/ProjectilesControl/VBoxContainer/launch" unique_id=228633170]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "2"
 
-[node name="Button" type="Button" parent="MarginContainer/Bottom/launch" unique_id=227711532]
+[node name="Button" type="Button" parent="UI/ProjectilesControl/VBoxContainer/launch" unique_id=227711532]
 custom_minimum_size = Vector2(62, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -112,12 +135,29 @@ size_flags_vertical = 8
 theme_override_font_sizes/font_size = 7
 text = "Launch"
 
-[node name="LeftBottom" type="VBoxContainer" parent="MarginContainer" unique_id=446434984]
+[node name="PanelContainer" type="PanelContainer" parent="UI/ProjectilesControl" unique_id=1826872399]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/ProjectilesControl/PanelContainer" unique_id=2024727774]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ProjectilesSprites" type="VBoxContainer" parent="UI/ProjectilesControl/PanelContainer/HBoxContainer" unique_id=2062963038]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="DeleteProjectiles" type="VBoxContainer" parent="UI/ProjectilesControl/PanelContainer/HBoxContainer" unique_id=1499245275]
+material = SubResource("ShaderMaterial_hd3ao")
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LeftBottom" type="VBoxContainer" parent="UI" unique_id=446434984]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
-[node name="HPBar" type="TextureRect" parent="MarginContainer/LeftBottom" unique_id=1842735584]
+[node name="HPBar" type="TextureRect" parent="UI/LeftBottom" unique_id=1842735584]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_5ysmq")
 custom_minimum_size = Vector2(80, 8)
@@ -125,7 +165,7 @@ layout_mode = 2
 texture = SubResource("CanvasTexture_ahhtf")
 script = ExtResource("3_5ysmq")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/LeftBottom/HPBar" unique_id=470723509]
+[node name="MarginContainer" type="MarginContainer" parent="UI/LeftBottom/HPBar" unique_id=470723509]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,39 +175,39 @@ grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 1
 
-[node name="Label" type="Label" parent="MarginContainer/LeftBottom/HPBar/MarginContainer" unique_id=1385062419]
+[node name="Label" type="Label" parent="UI/LeftBottom/HPBar/MarginContainer" unique_id=1385062419]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "100"
 label_settings = SubResource("LabelSettings_5ysmq")
 
-[node name="EngineControl" type="HBoxContainer" parent="MarginContainer" unique_id=1338764693]
+[node name="EngineControl" type="HBoxContainer" parent="UI" unique_id=1338764693]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 script = ExtResource("4_uo2fv")
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/EngineControl" unique_id=209103940]
+[node name="PanelContainer" type="PanelContainer" parent="UI/EngineControl" unique_id=209103940]
 self_modulate = Color(0, 0, 0, 0)
 layout_mode = 2
 
-[node name="PolarDirectionTexture" type="TextureRect" parent="MarginContainer/EngineControl/PanelContainer" unique_id=1659957009]
+[node name="PolarDirectionTexture" type="TextureRect" parent="UI/EngineControl/PanelContainer" unique_id=1659957009]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_uo2fv")
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = SubResource("CanvasTexture_047uy")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/EngineControl" unique_id=1014455299]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/EngineControl" unique_id=1014455299]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/EngineControl/VBoxContainer" unique_id=669844020]
+[node name="LineEdit" type="LineEdit" parent="UI/EngineControl/VBoxContainer" unique_id=669844020]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 placeholder_text = "0"
 editable = false
 
-[node name="Button" type="Button" parent="MarginContainer/EngineControl/VBoxContainer" unique_id=758936768]
+[node name="Button" type="Button" parent="UI/EngineControl/VBoxContainer" unique_id=758936768]
 layout_mode = 2
 theme_override_font_sizes/font_size = 7
 disabled = true
@@ -175,22 +215,112 @@ toggle_mode = true
 button_pressed = true
 text = "Turn on"
 
-[node name="EnergyBar" type="TextureRect" parent="MarginContainer/EngineControl" unique_id=443121797]
+[node name="EnergyBar" type="TextureRect" parent="UI/EngineControl" unique_id=443121797]
 material = SubResource("ShaderMaterial_047uy")
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 texture = SubResource("CanvasTexture_5pdws")
 
-[connection signal="editing_toggled" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_editing_toggled"]
-[connection signal="mouse_entered" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_mouse_exited"]
-[connection signal="text_changed" from="MarginContainer/Bottom/pos_x/LineEditX" to="." method="_on_line_edit_x_text_changed"]
-[connection signal="editing_toggled" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_editing_toggled"]
-[connection signal="mouse_entered" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_mouse_exited"]
-[connection signal="text_changed" from="MarginContainer/Bottom/pos_y/LineEditY" to="." method="_on_line_edit_y_text_changed"]
-[connection signal="button_up" from="MarginContainer/Bottom/launch/Button" to="." method="_on_button_button_up"]
-[connection signal="mouse_entered" from="MarginContainer/EngineControl/PanelContainer/PolarDirectionTexture" to="MarginContainer/EngineControl" method="_on_polar_direction_texture_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/EngineControl/PanelContainer/PolarDirectionTexture" to="MarginContainer/EngineControl" method="_on_polar_direction_texture_mouse_exited"]
-[connection signal="button_down" from="MarginContainer/EngineControl/VBoxContainer/Button" to="MarginContainer/EngineControl" method="_on_button_button_down"]
-[connection signal="button_up" from="MarginContainer/EngineControl/VBoxContainer/Button" to="MarginContainer/EngineControl" method="_on_button_button_up"]
+[node name="PauseMenu" type="PanelContainer" parent="." unique_id=2079757625]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uo2fv")
+script = ExtResource("6_047uy")
+
+[node name="Center" type="VBoxContainer" parent="PauseMenu" unique_id=1624706806]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Return" type="Button" parent="PauseMenu/Center" unique_id=586706654]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Return"
+
+[node name="Settings" type="Button" parent="PauseMenu/Center" unique_id=132363164]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Settings"
+
+[node name="Exit" type="Button" parent="PauseMenu/Center" unique_id=42707669]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Exit"
+
+[node name="Settings" type="ScrollContainer" parent="PauseMenu" unique_id=2134547613]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Settings" unique_id=620816159]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="SettingsBack" type="Button" parent="PauseMenu/Settings/VBoxContainer" unique_id=337006437]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_5pdws")
+text = "Back"
+
+[node name="AudioTitle" type="PanelContainer" parent="PauseMenu/Settings/VBoxContainer" unique_id=1714246089]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_047uy")
+
+[node name="Label" type="Label" parent="PauseMenu/Settings/VBoxContainer/AudioTitle" unique_id=1623776791]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Audio"
+
+[node name="Audio" type="VBoxContainer" parent="PauseMenu/Settings/VBoxContainer" unique_id=1993362095]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+alignment = 1
+
+[node name="Label2" type="Label" parent="PauseMenu/Settings/VBoxContainer/Audio" unique_id=1933493160]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="PauseMenu/Settings/VBoxContainer/Audio" unique_id=1589285398]
+layout_mode = 2
+value = 100.0
+
+[node name="Label3" type="Label" parent="PauseMenu/Settings/VBoxContainer/Audio" unique_id=944350646]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="PauseMenu/Settings/VBoxContainer/Audio" unique_id=1189077155]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="PauseMenu/Settings/VBoxContainer/Audio" unique_id=1983059999]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="PauseMenu/Settings/VBoxContainer/Audio" unique_id=1736324037]
+layout_mode = 2
+value = 100.0
+
+[connection signal="text_changed" from="UI/ProjectilesControl/VBoxContainer/pos_x/LineEditX" to="UI/ProjectilesControl" method="_on_line_edit_x_text_changed"]
+[connection signal="text_changed" from="UI/ProjectilesControl/VBoxContainer/pos_y/LineEditY" to="UI/ProjectilesControl" method="_on_line_edit_y_text_changed"]
+[connection signal="button_up" from="UI/ProjectilesControl/VBoxContainer/launch/Button" to="UI/ProjectilesControl" method="_on_button_button_up"]
+[connection signal="mouse_entered" from="UI/EngineControl/PanelContainer/PolarDirectionTexture" to="UI/EngineControl" method="_on_polar_direction_texture_mouse_entered"]
+[connection signal="mouse_exited" from="UI/EngineControl/PanelContainer/PolarDirectionTexture" to="UI/EngineControl" method="_on_polar_direction_texture_mouse_exited"]
+[connection signal="button_down" from="UI/EngineControl/VBoxContainer/Button" to="UI/EngineControl" method="_on_button_button_down"]
+[connection signal="button_up" from="UI/EngineControl/VBoxContainer/Button" to="UI/EngineControl" method="_on_button_button_up"]
+[connection signal="button_down" from="PauseMenu/Center/Return" to="PauseMenu" method="_on_return_button_down"]
+[connection signal="button_down" from="PauseMenu/Center/Settings" to="PauseMenu" method="_on_settings_button_down"]
+[connection signal="button_down" from="PauseMenu/Center/Exit" to="PauseMenu" method="_on_exit_button_down"]
+[connection signal="button_down" from="PauseMenu/Settings/VBoxContainer/SettingsBack" to="PauseMenu" method="_on_settings_back_button_down"]
+[connection signal="value_changed" from="PauseMenu/Settings/VBoxContainer/Audio/MasterSlider" to="PauseMenu" method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="PauseMenu/Settings/VBoxContainer/Audio/MusicSlider" to="PauseMenu" method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="PauseMenu/Settings/VBoxContainer/Audio/SFXSlider" to="PauseMenu" method="_on_sfx_slider_value_changed"]
